@@ -48,7 +48,7 @@ const Login = () => {
     React.useEffect(() => {
       dummyUsers.map(item => {
           if(item.email === credentials.email && item.password === credentials.password) {
-              navigate('/main');
+              navigate('/home');
           }
       })
     }, [credentials])

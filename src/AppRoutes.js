@@ -7,6 +7,9 @@ import { Routes, Route } from 'react-router';
 import Landing from './layout/Landing';
 import Login from './components/navigation/Login';
 import Signup from './components/navigation/Signup';
+import NavbarApp from './components/navbar/NavbarApp';
+import Home from './app/Home';
+import Settings from './app/Settings';
 
 
 const AppRoutes = () => {
@@ -24,6 +27,8 @@ const AppRoutes = () => {
 
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup /> } />
+          <Route path='/home' element={<><NavbarApp /><Home /></>} />
+          <Route path='/settings' element={<><NavbarApp /><Settings /></>} />
     
         </Routes>
     )
