@@ -12,7 +12,7 @@ import { Icon } from '@mui/material';
 const CardSoft = (props) => {
     return (
         <Card sx={{ 
-            maxWidth: 250, 
+            maxWidth: { xs: 'auto', sm: 320, md: 180, lg: 240, xl: 320 }, 
             borderRadius: '8px', 
             mb: 4, 
             boxShadow: "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",

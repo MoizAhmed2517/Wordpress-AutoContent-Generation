@@ -55,7 +55,7 @@ const MUITabs = () => {
       <Box sx={{ width: '100%' }}>
 
         <Box sx={{ borderBottom: 1, borderColor: 'transparent' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
             <Tab label="Login" {...a11yProps(0)} />
             <Tab label="Trending Topic" {...a11yProps(1)} />
             <Tab label="Generate & Post" {...a11yProps(2)} />

@@ -10,12 +10,12 @@ const InfoBanner = () => {
             backgroundColor: 'rgba(255, 255, 255, 1) !important',
             height: '100%',
             paddingLeft: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
-            paddingRight: '10%',
+            paddingRight: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
             paddingBottom: '3.5%',
         }}>
-            <Grid container justifyContent="center" alignItems="center" sx={{ pt: 8 }}>
+            <Grid container justifyContent="center" alignItems="center" sx={{ mt: 4 }}>
     
-              <Grid item xs={12} md={6} sx={{ paddingRight: '10%' }}>
+              <Grid item sm={12} md={6} sx={{ paddingRight: '10%' }}>
                 <Stack direction="column" sx={{ paddingTop: '2%'}}>
                   <Typography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold' }}>
                     Every business matters. We give you tools to succeed.
@@ -46,8 +46,8 @@ const InfoBanner = () => {
                 </Stack>
               </Grid>
 
-              <Grid item xs={12} md={6}>
-                <img src={banner} alt="Banner 2" style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto'}} />
+              <Grid item sm={12} md={6} sx={{ display: { xs: 'none', sm: 'none', md: "flex" } }}>
+                <img src={banner} alt="Banner 2" style={{ maxWidth: '100%', maxHeight: '100%', width: 'auto', height: 'auto',}} />
               </Grid>
     
             </Grid>

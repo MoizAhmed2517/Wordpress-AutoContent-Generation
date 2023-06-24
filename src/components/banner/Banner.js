@@ -113,7 +113,7 @@ const Banner = () => {
                 />
 
             </Grid>
-            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Grid item xs={12} md={6} sx={{ display: { xs: 'none', sm: 'none', md: 'flex' }, justifyContent: 'center', alignItems: 'center' }}>
                 <img src={bannerImg} alt="banner Image" style={{ maxWidth: '75%', height: 'auto', marginTop: '20%', }} />
             </Grid>
         </Grid>

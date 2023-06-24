@@ -16,8 +16,9 @@ const BusinessCard = () => {
         backgroundColor: 'rgba(255, 255, 255, 1) !important',
         height: '100%',
         paddingLeft: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
-        paddingRight: '10%',
+        paddingRight: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
         paddingBottom: '6%',
+        mb: 4
     }}>
 
         <Stack direction="column" sx={{ pt: 10 }}>
@@ -34,7 +35,7 @@ const BusinessCard = () => {
                 paddingRight: '10%',
             }}>
 
-                <Grid container spacing={20}>
+                <Grid container spacing={2}>
                     <Grid item xs={12} md={3}>
                         <CardHoverIcon icon={<ContentPasteIcon sx={{ height: 64, width: 64 }} />} text="Generate Content" />
                     </Grid>

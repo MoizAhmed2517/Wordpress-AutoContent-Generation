@@ -26,7 +26,7 @@ const TabSlider = () => {
               
               <Grid item xs={12} md={6}>
     
-                <Stack direction="column" sx={{ paddingTop: '20%'  }}>
+                <Stack direction="column" sx={{ paddingTop: { xs: '1%', md: '6%', lg: '20%' }  }}>
                   <Typography variant='h5' sx={{ fontSize: 22, fontWeight: 'bold' }}>
                     Manage your blog and Generate content efficently
                   </Typography>
@@ -42,7 +42,7 @@ const TabSlider = () => {
                       variant='outlined'
                       sx={{
                           color: '#3f51b5',
-                          width: '20%',
+                          width: { xs: '32%', sm: '30%', md: '30%', lg: '25%' },
                           // boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)', 
                           textTransform: 'capitalize',
                           '&:hover': {
@@ -56,7 +56,6 @@ const TabSlider = () => {
     
     
                 </Stack>
-    
     
               </Grid>
     

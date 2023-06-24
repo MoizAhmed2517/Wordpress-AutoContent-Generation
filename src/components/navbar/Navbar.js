@@ -110,7 +110,7 @@ const Navbar = (props) => {
 
 
                 {/* Mobile */}
-                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 
                   <IconButton
                     size="large"
@@ -156,7 +156,7 @@ const Navbar = (props) => {
                     ))}
                   </Menu>
 
-                </Box>
+                </Box> */}
 
                 {/* App bar main icon -- mobile */}
                 <Typography
@@ -176,7 +176,7 @@ const Navbar = (props) => {
                 </Typography>
 
                 {/* Desktop */}
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, marginLeft: 5 }}>
+                {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, marginLeft: 5 }}>
                   {pages.map((page, index) => (
                       <Button
                         key={page.name}
@@ -202,14 +202,14 @@ const Navbar = (props) => {
                       </Button>
                     ))
                   }
-                </Box>
+                </Box> */}
 
-                <Box sx={{ marginLeft: 'auto' }}>
+                <Box sx={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  <Button sx={{ mr: 2, color: 'black', textTransform: 'capitalize' }} component={Link} to="/login">Log In</Button>
                     <Button sx={{
-                      display: { xs: 'none', md: 'flex' }, 
                       boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)', 
                       color: 'rgba(0, 0, 0, 0.87)', 
-                      mr: { xs: 2, md: 8}, 
+                      mr: { xs: 2, md: 8},
                       bgcolor: '#ff9100',
                       borderRadius: '20px', 
                       textTransform: 'capitalize', 

@@ -16,28 +16,28 @@ const CardContent = () => {
         backgroundColor: 'rgba(0, 0, 0, 0.03) !important',
         height: '100%',
         paddingLeft: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
-        paddingRight: '10%',
+        paddingRight: {  xs: '5%', sm: '10%', md: '7%', lg: '6.5%', xl: '4.5%' },
         paddingBottom: '3.5%',
     }}>
         <Grid container sx={{ pt: 10 }}>
 
-          <Grid item xs={12} md={6}>
+          <Grid item sm={12} md={6}>
 
             <Grid container>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6} md={6}>
                 <CardSoft icon={<ContentPasteIcon sx={{ height: 22, width: 22, color: '#ff9100' }} />}  text="heading 1" />
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6} md={6}>
                 <CardSoft icon={<ShapeLineOutlinedIcon sx={{ height: 22, width: 22, color: '#ff9100' }} />}  text="heading 2" />
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6} md={6}>
                 <CardSoft icon={<AltRouteOutlinedIcon sx={{ height: 22, width: 22, color: '#ff9100' }} />}  text="heading 3" />
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} sm={6} md={6}>
                 <CardSoft icon={<ConnectedTvOutlinedIcon sx={{ height: 22, width: 22, color: '#ff9100' }} />}  text="heading 4" />
               </Grid>
 
@@ -46,9 +46,9 @@ const CardContent = () => {
           </Grid>
 
           
-          <Grid item xs={12} md={6}>
+          <Grid item sm={12} md={6}>
 
-            <Stack direction="column" sx={{ paddingTop: '10%'  }}>
+            <Stack direction="column" sx={{ paddingTop: { xs: '2%', md: '10%' }  }}>
               <Typography variant='h4' sx={{ fontSize: 28, fontWeight: 'bold' }}>
                 Made by business people for business people
               </Typography>
