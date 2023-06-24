@@ -4,7 +4,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router';
 
 // Components
-import Navbar from './components/navbar/Navbar';
+import Landing from './layout/Landing';
 
 
 const AppRoutes = () => {
@@ -16,7 +16,7 @@ const AppRoutes = () => {
             exact 
             path='/' 
             element={
-              <Navbar />
+              <Landing />
             } 
           />
     

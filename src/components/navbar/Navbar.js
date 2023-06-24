@@ -1,13 +1,10 @@
 import * as React from 'react';
-
-import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 
 // Icons
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 
 // Material ui components
-import { styled, useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,19 +12,11 @@ import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Stack } from '@mui/material';
 
 // Pages
 const pages = [
@@ -49,11 +38,7 @@ const pages = [
   },
 ];
 
-const settings = ['Logout'];
-const colors = [ 'linear-gradient(195deg, #49a3f1, #1A73E8)', 'linear-gradient(195deg, #42424a, #191919)', 'linear-gradient(195deg, #66BB6A, #43A047)', 'linear-gradient(195deg, #FFA726, #FB8C00)', 'linear-gradient(195deg, #EC407A, #D81B60)', 'linear-gradient(195deg, #EF5350, #E53935)' ]
-const primaryColors = [ '#49a3f1', '#42424a', '#66BB6A', '#FFA726', '#EC407A', '#EF5350']
 const activeTabColor = ['#F39223', '#044d95', '#890404', '#202326', '#83062e', '#e3d20e']
-const iconColor = ['#044d95', '#04951d', '#7f0495', '#6c6c6c', '#a30e0e', '#ffb100' ]
 
 
 function ElevationScroll(props) {
@@ -78,9 +63,6 @@ const Navbar = (props) => {
 
     // States 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const [anchorElSetting, setAnchorElSetting] = React.useState(null);
-    const [tabColor, setTabColor] = React.useState(0);
     const [activeTab, setActiveTab] = React.useState(0);
     const [activeTabColors, setActiveTabColors] = React.useState(0);
   
@@ -111,17 +93,17 @@ const Navbar = (props) => {
                 
                 {/* App bar main icon -- desktop */}
                 <Typography
-                        variant="h5"
-                        noWrap
-                        sx={{
-                        ml: 8,
-                        display: { xs: 'none', md: 'flex' },
-                        fontFamily: 'monospace',
-                        fontWeight: 1000,
-                        letterSpacing: '.2rem',
-                        color: '#3f51b5',
-                        textDecoration: 'none',
-                    }}
+                      variant="h5"
+                      noWrap
+                      sx={{
+                      ml: 8,
+                      display: { xs: 'none', md: 'flex' },
+                      fontFamily: 'monospace',
+                      fontWeight: 1000,
+                      letterSpacing: '.2rem',
+                      color: '#3f51b5',
+                      textDecoration: 'none',
+                  }}
                 >
                     BLOGBOT
                 </Typography>
@@ -181,8 +163,8 @@ const Navbar = (props) => {
                         variant="h5"
                         noWrap
                         sx={{
-                        ml: 2,
-                        display: { xs: 'fkex', md: 'none' },
+                        display: { xs: 'flex', md: 'none' },
+                        flexGrow: 1,
                         fontFamily: 'monospace',
                         fontWeight: 1000,
                         letterSpacing: '.2rem',
@@ -223,7 +205,8 @@ const Navbar = (props) => {
                 </Box>
 
                 <Box sx={{ marginLeft: 'auto' }}>
-                    <Button sx={{ 
+                    <Button sx={{
+                      display: { xs: 'none', md: 'flex' }, 
                       boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)', 
                       color: 'rgba(0, 0, 0, 0.87)', 
                       mr: { xs: 2, md: 8}, 
@@ -238,13 +221,14 @@ const Navbar = (props) => {
                       variant="contained" 
                       component={Link} 
                       to="/signup"
-                      endIcon={<GroupAddOutlinedIcon />}
+                      startIcon={<GroupAddOutlinedIcon />}
                     >
                         Sign Up
                     </Button>
                 </Box>
                 
               </Toolbar>
+              
             </AppBar>
           </ElevationScroll>
           <Toolbar />
