@@ -65,10 +65,6 @@ const MDTableGridList = () => {
     const [openConfirm, setOpenConfirm] = React.useState(false);
     const [delValue, setDelValue] = React.useState('');
 
-    const handleConfirmOpen = () => {
-        
-    };
-
     const handleConfirmClose = () => {
         setOpenConfirm(false);
     };

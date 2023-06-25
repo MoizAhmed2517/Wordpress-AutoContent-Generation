@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Grid, TextField } from '@mui/material';
 
 const AddNewUser = (props) => {
   const [scroll, setScroll] = React.useState('paper');
@@ -16,28 +17,26 @@ const AddNewUser = (props) => {
 
   return (
     <Dialog
-        open={open}
-        onClose={handleClose}
+        open={props.openModal}
+        onClose={props.handleClose}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
+        maxWidth={'md'}
       >
-        <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="scroll-dialog-title">Add New Competitor</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
-            {[...new Array(50)]
-              .map(
-                () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-              )
-              .join('\n')}
-          </DialogContentText>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <TextField fullWidth variant="outlined" label="Competitor Name" placeholder="Write the blog name you want to track" />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField fullWidth multiline variant="outlined" label="Descrption" placeholder="Write descrption of the blog" />
+            </Grid>
+            <Grid item xs={12}>
+                <TextField fullWidth variant="outlined" label="Web URL" placeholder="place a web url (Also include https://)" />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

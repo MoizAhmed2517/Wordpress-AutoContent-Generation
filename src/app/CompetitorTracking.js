@@ -1,5 +1,4 @@
 import React from 'react'
-import countryList  from 'react-select-country-list';
 
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -10,10 +9,18 @@ import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, C
 import Autocomplete from '@mui/material/Autocomplete';
 import MDTableGridTrack from '../components/tables/MDTableGridTrack';
 import MDTableGridList from '../components/tables/MDTableGridList';
+import AddNewUser from '../components/modal/AddNewUser';
 
 const CompetitorTracking = () => {
-    const [selectCountry, setSelectCountry] = React.useState('');
-    const country = React.useMemo(() => countryList ().getData(), [])
+    const [openConfirm, setOpenConfirm] = React.useState(false);
+
+    const handleConfirmOpen = () => {
+        setOpenConfirm(true);
+    };
+
+    const handleConfirmClose = () => {
+        setOpenConfirm(false);
+    };
 
     return (
         <Box sx={{ flexGrow: 0, p: 0.5, marginLeft: 8  }}>
@@ -70,7 +77,7 @@ const CompetitorTracking = () => {
                                 <Stack direction="row" spacing={1}>
                                     <Typography variant="h6" sx={{ mt: 0.3,color: "rgba(0,0,0,0.8)" }}>Competitor List</Typography>
                                     <Tooltip title="Add New Competitor">
-                                        <IconButton>
+                                        <IconButton onClick={handleConfirmOpen}>
                                             <AddBoxIcon sx={{ color: "#ff9100" }} />
                                         </IconButton>
                                     </Tooltip>
@@ -83,6 +90,8 @@ const CompetitorTracking = () => {
 
                 </Grid>
                 </Box>
+
+                <AddNewUser openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} />
                     
             </Stack>
         </Box>
