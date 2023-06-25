@@ -302,10 +302,6 @@ const NavbarApp = (props) => {
                     
                 </Menu>
 
-
-
-
-
                 <IconButton
                     id="basic-button"
                     aria-controls={open ? 'basic-menu' : undefined}
@@ -344,8 +340,6 @@ const NavbarApp = (props) => {
                         
                     </MenuItem>
                 </Menu>
-
-                
 
               </Box>
               

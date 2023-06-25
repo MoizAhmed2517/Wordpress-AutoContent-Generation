@@ -56,6 +56,8 @@ const TextEditor = () => {
         return html;
     };
 
+    console.log(getHtmlFromEditor());
+
   return (
     <Editor
         editorState={editorState}
