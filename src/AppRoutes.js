@@ -13,6 +13,7 @@ import Settings from './app/Settings';
 import Sidebar from './components/sidebar/Sidebar';
 import TrendingTopic from './app/TrendingTopic';
 import CompetitorTracking from './app/CompetitorTracking';
+import BlogTopic from './app/BlogTopic';
 
 
 const AppRoutes = () => {
@@ -34,8 +35,8 @@ const AppRoutes = () => {
           <Route path='/settings' element={<><Sidebar /><Settings /></>} />
           <Route path='/trending-topic' element={<><Sidebar /><TrendingTopic /></>} />
           <Route path='/competitor-tracking' element={<><Sidebar /><CompetitorTracking /></>} />
+          <Route path='/blog-topic' element={<><Sidebar /><BlogTopic /></>} />
           
-    
         </Routes>
     )
 }

@@ -60,120 +60,124 @@ const rows = [
 ];
 
 const MDTableGridList = () => {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [openConfirm, setOpenConfirm] = React.useState(false);
-    const [delValue, setDelValue] = React.useState('');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openConfirm, setOpenConfirm] = React.useState(false);
+  const [delValue, setDelValue] = React.useState('');
 
-    const handleConfirmClose = () => {
-        setOpenConfirm(false);
-    };
+  const handleConfirmClose = () => {
+      setOpenConfirm(false);
+  };
+
+  const handleChangePage = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const handleDelete = (row) => {
+      setDelValue(row.name)
+      setOpenConfirm(true);
+  }
+
+  const handleView = (row) => {
+      window.open(row.link, '_blank')
+  }
   
-    const handleChangePage = (newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
-    };
-  
-    const handleDelete = (row) => {
-        setDelValue(row.name)
-        setOpenConfirm(true);
-    }
-  
-    const handleView = (row) => {
-        window.open(row.link, '_blank')
-    }
-  
-      return (
-        <Box sx={{ width: '100%', overflow: 'hidden' }}>
-  
-          <TableContainer sx={{ maxHeight: 360 }}>
-  
-            <Table stickyHeader aria-label="sticky table">
-  
-              <TableHead>
-  
-                <TableRow>
-  
-                  {columns.map((column, index) => (
-                    <TableCell
-                      key={index}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
+  return (
+    <Box sx={{ width: '100%', overflow: 'hidden' }}>
+
+      <TableContainer sx={{ maxHeight: 360 }}>
+
+        <Table stickyHeader aria-label="sticky table">
+
+          <TableHead>
+
+            <TableRow>
+
+              {columns.map((column, index) => (
+                <TableCell
+                  key={index}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+
+              <TableCell key={edit.id} align={edit.align} style={{ minWidth: edit.minWidth }}>
+                  {edit.label}
+              </TableCell>
+
+              <TableCell key={del.id} align={del.align} style={{ minWidth: del.minWidth }}>
+                  {del.label}
+              </TableCell>
+
+            </TableRow>
+
+          </TableHead>
+
+          <TableBody>
+
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => {
+                return (
+                  <TableRow hover tabIndex={-1} key={index}>
+
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                          <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === 'number'
+                              ? column.format(value)
+                              : value}
+                          </TableCell>
+                          );
+                      })
+                    }
+
+                    <TableCell key={edit.id} align={edit.align}>
+                      <Tooltip title='View in seprate tab'>
+                        <IconButton onClick={() => handleView(row)}>
+                            <VisibilityOutlinedIcon />
+                        </IconButton>
+                      </Tooltip>
                     </TableCell>
-                  ))}
-  
-                  <TableCell key={edit.id} align={edit.align} style={{ minWidth: edit.minWidth }}>
-                      {edit.label}
-                  </TableCell>
-  
-                  <TableCell key={del.id} align={del.align} style={{ minWidth: del.minWidth }}>
-                      {del.label}
-                  </TableCell>
-  
-                </TableRow>
-  
-              </TableHead>
-  
-              <TableBody>
-  
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow hover tabIndex={-1} key={index}>
-  
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                              <TableCell key={column.id} align={column.align}>
-                                  {column.format && typeof value === 'number'
-                                  ? column.format(value)
-                                  : value}
-                              </TableCell>
-                              );
-                          })
-                        }
-  
-                        <TableCell key={edit.id} align={edit.align}>
-                          <IconButton onClick={() => handleView(row)}>
-                              <VisibilityOutlinedIcon />
-                          </IconButton>
-                        </TableCell>
-  
-                        <TableCell key={del.id} align={del.align}>
-                          <IconButton onClick={() => handleDelete(row)}><DeleteOutlineOutlinedIcon /></IconButton>
-                        </TableCell>
-  
-                      </TableRow>
-                    );
-                  })}
-  
-              </TableBody>
-  
-            </Table>
-  
-          </TableContainer>
 
-          <DeleteConfirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} topic={delValue} />
-  
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-  
-        </Box>
-      );
+                    <TableCell key={del.id} align={del.align}>
+                      <Tooltip title='Delete highlighted blog'>
+                        <IconButton onClick={() => handleDelete(row)}><DeleteOutlineOutlinedIcon /></IconButton>
+                      </Tooltip>
+                    </TableCell>
+
+                  </TableRow>
+                );
+              })}
+
+          </TableBody>
+
+        </Table>
+
+      </TableContainer>
+
+      <DeleteConfirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} topic={delValue} />
+
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+
+    </Box>
+  );
 }
 
 export default MDTableGridList

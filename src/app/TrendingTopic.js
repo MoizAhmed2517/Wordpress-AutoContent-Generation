@@ -4,15 +4,35 @@ import countryList  from 'react-select-country-list';
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import SourceIcon from '@mui/icons-material/Source';
 
 // Material UI components
 import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, Card, CardContent } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import MDTableGridTopic from '../components/tables/MDTableGridTopic';
 
+const options = [
+    { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
+    { label: 'Sustainable Fashion and Eco-friendly Brands - Ethical Manufacturing Practices' },
+    { label: 'Mindfulness and Meditation Practices - Mindfulness Meditation' },
+    { label: 'Digital Marketing Strategies for Small Businesses - Social Media Marketing' },
+    { label: 'Home Organization and Decluttering Tips - Minimalist Living' },
+    { label: 'Renewable Energy Technologies and Innovations - Solar Power' },
+    { label: 'Effective Time Management Techniques - Prioritization and Planning' },
+    { label: 'Healthy Cooking and Nutritious Recipes - Plant-Based Diet' },
+    { label: 'Personal Finance and Investment Strategies - Budgeting and Saving Tips' },
+    { label: 'DIY Crafts and Creative Projects - Paper Crafts' },
+    { label: 'Cybersecurity Best Practices for Individuals and Businesses - Password Security' },
+    { label: 'Travel Destinations Off the Beaten Path - Adventure Travel' },
+    { label: 'Effective Communication Skills for Professionals - Active Listening' },
+    { label: 'Mental Health and Self-Care Practices - Stress Management Techniques' },
+    { label: 'Fitness and Workout Routines for Busy Individuals - High-Intensity Interval Training (HIIT)' }
+]
+
 const TrendingTopic = () => {
 
     const [selectCountry, setSelectCountry] = React.useState('');
+    const [selectTopic, setSelectTopic] = React.useState('');
     const country = React.useMemo(() => countryList ().getData(), [])
 
     return (
@@ -58,7 +78,7 @@ const TrendingTopic = () => {
                             id="combo-box-demo"
                             options={country}
                             renderInput={(params) => <TextField {...params} label="Select Country" />}
-                            onChange={(event, value) => setSelectCountry(value)}
+                            onChange={(event, value) => setSelectCountry(event, value)}
                         />
 
                     </Grid>
@@ -68,15 +88,16 @@ const TrendingTopic = () => {
                         <Autocomplete
                             disablePortal
                             id="combo-box-demo"
-                            options={country}
+                            options={options}
                             renderInput={(params) => <TextField {...params} label="Select Topic" />}
-                            onChange={(event, value) => setSelectCountry(value)}
+                            onChange={(event, value) => setSelectTopic(value)}
                         />
 
                     </Grid>
 
                     <Grid item xs={12} md={2}>
-                        <Button 
+                        <Button
+                            endIcon={<SourceIcon />}
                             variant='contained' 
                             fullWidth 
                             sx={{

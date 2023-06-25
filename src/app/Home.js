@@ -11,12 +11,23 @@ import TextEditor from '../components/editor/TextEditor';
 import DropDown from '../components/miscellaneous/DropDown';
 import Confirmation from '../components/modal/Confirmation';
 
-const population = [
-  { population: 'Energy' },
-  { population: 'Ai' },
-  { population: 'Project Management' },
-  { population: 'End of World' }
-];
+const options = [
+  { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
+  { label: 'Sustainable Fashion and Eco-friendly Brands - Ethical Manufacturing Practices' },
+  { label: 'Mindfulness and Meditation Practices - Mindfulness Meditation' },
+  { label: 'Digital Marketing Strategies for Small Businesses - Social Media Marketing' },
+  { label: 'Home Organization and Decluttering Tips - Minimalist Living' },
+  { label: 'Renewable Energy Technologies and Innovations - Solar Power' },
+  { label: 'Effective Time Management Techniques - Prioritization and Planning' },
+  { label: 'Healthy Cooking and Nutritious Recipes - Plant-Based Diet' },
+  { label: 'Personal Finance and Investment Strategies - Budgeting and Saving Tips' },
+  { label: 'DIY Crafts and Creative Projects - Paper Crafts' },
+  { label: 'Cybersecurity Best Practices for Individuals and Businesses - Password Security' },
+  { label: 'Travel Destinations Off the Beaten Path - Adventure Travel' },
+  { label: 'Effective Communication Skills for Professionals - Active Listening' },
+  { label: 'Mental Health and Self-Care Practices - Stress Management Techniques' },
+  { label: 'Fitness and Workout Routines for Busy Individuals - High-Intensity Interval Training (HIIT)' }
+]
 
 const Home = () => {
 
@@ -59,7 +70,7 @@ const Home = () => {
 
                       <Stack direction="row" spacing={1}>
                         <Typography variant='button' sx={{ color: 'rgba(0,0,0,0.5)', fontWeight: 'bold', fontSize: 18 }}>
-                            Welcome to BlogBot! 
+                            Welcome to BlogBot - Power up your blogs with AI 
                         </Typography>
                         <Tooltip title={"In this tab you can generate lot of AI content and using single can post it to your deired blog and its topic"} placement='bottom-end'>
                           <InfoOutlinedIcon sx={{ pt: 0.5, color: 'rgba(0,0,0,0.5)' }} />
@@ -75,7 +86,7 @@ const Home = () => {
 
                 <Grid item xs={12} sm={12} md={4}>
                   <Button
-                    startIcon={<SourceIcon />}
+                    endIcon={<SourceIcon />}
                     fullWidth
                     variant='contained'
                     size="large"
@@ -104,7 +115,7 @@ const Home = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={6}>
-                  <DropDown data={population} label="Topic" placeholder="Select your topic" valueSet={setDropDownValue} />
+                  <DropDown data={options} label="Topic" placeholder="Select your topic" valueSet={setDropDownValue} />
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={6}>

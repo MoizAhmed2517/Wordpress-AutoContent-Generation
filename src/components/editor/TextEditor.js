@@ -32,7 +32,7 @@ const TextEditor = () => {
     //     },
     // };
       
-    const initialContent = `Hey! I am a dummy text. You can generate text by typing any topic of your choice. The fun part is that you can tune it as you need.`;
+    const initialContent = `Hey! I am a dummy text. You can generate text or type any topic of your choice. The fun part is that you can tune it as you need.`;
     const contentState = ContentState.createFromText(initialContent);
     const initialEditorState = EditorState.createWithContent(contentState);
     const [editorState, setEditorState] = useState(initialEditorState);

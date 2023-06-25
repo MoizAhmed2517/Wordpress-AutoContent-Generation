@@ -13,11 +13,12 @@ const DropDown = (props) => {
   
   return (
     <Autocomplete
-      onChange={handleDropDown}
+      onChange={(event, value) => handleDropDown(event, value)}
       id="tags-outlined"
       options={props.data}
-      getOptionLabel={option => option.population}
-      filterSelectedOptions
+      // getOptionLabel={option => option.label}
+      // filterSelectedOptions
+      disablePortal
       renderInput={(params) => (
         <TextField
           {...params}

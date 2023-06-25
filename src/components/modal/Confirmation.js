@@ -26,7 +26,7 @@ const Confirmation = (props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            We will be posting the content to '{props.topic.population}'. The process can't be revert.
+            We will be posting the content. Once posted the process can't be reverted.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

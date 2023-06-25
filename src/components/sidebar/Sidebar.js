@@ -447,7 +447,7 @@ const Sidebar = () => {
                       color: 3 === activeTab && activeTabColor[activeTabColors], 
                   }}
                   component={Link}
-                  to='/home'
+                  to='/blog-topic'
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   onMouseMove={handleMouseMove}
@@ -463,7 +463,7 @@ const Sidebar = () => {
                   >
                       <TopicIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Blog Topic" sx={{ opacity: open ? 1 : 0 }} component={Link} to='/home' />
+                  <ListItemText primary="Blog Topic" sx={{ opacity: open ? 1 : 0 }} component={Link} to='/blog-topic' />
               </ListItemButton>
             </Tooltip>
 
