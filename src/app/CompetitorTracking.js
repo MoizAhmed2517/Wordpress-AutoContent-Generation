@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -12,7 +13,26 @@ import MDTableGridList from '../components/tables/MDTableGridList';
 import AddNewUser from '../components/modal/AddNewUser';
 
 const CompetitorTracking = () => {
+
+
     const [openConfirm, setOpenConfirm] = React.useState(false);
+
+    // APIs
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
+            console.log(response.data);
+            // Handle the response data
+          } catch (error) {
+            console.error(error);
+            // Handle the error
+          }
+        };
+    
+        fetchData();
+      }, []);
 
     const handleConfirmOpen = () => {
         setOpenConfirm(true);
