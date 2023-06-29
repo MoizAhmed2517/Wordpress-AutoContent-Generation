@@ -5,37 +5,14 @@ import '../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-const TextEditor = () => {
+const TextEditor = (props) => {
 
-    // const toolbarOptions = {
-    //     options: ['inline', 'blockType', 'list', 'textAlign', 'link', 'history'],
-    //     inline: {
-    //       options: ['bold', 'italic', 'underline', 'strikethrough'],
-    //     },
-    //     blockType: {
-    //       inDropdown: true,
-    //       options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
-    //     },
-    //     list: {
-    //       inDropdown: true,
-    //       options: ['unordered', 'ordered'],
-    //     },
-    //     textAlign: {
-    //       inDropdown: true,
-    //       options: ['left', 'center', 'right', 'justify'],
-    //     },
-    //     link: {
-    //       inDropdown: true,
-    //       showOpenOptionOnHover: true,
-    //       defaultTargetOption: '_blank',
-    //       options: ['link', 'unlink'],
-    //     },
-    // };
-      
-    const initialContent = `Hey! I am a dummy text. You can generate text or type any topic of your choice. The fun part is that you can tune it as you need.`;
-    const contentState = ContentState.createFromText(initialContent);
-    const initialEditorState = EditorState.createWithContent(contentState);
-    const [editorState, setEditorState] = useState(initialEditorState);
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(ContentState.createFromText(props.content)));
+
+    useEffect(() => {
+      setEditorState(EditorState.createWithContent(ContentState.createFromText(props.content)));
+      // console.log(props.content);
+    },[props.content])
 
     const onEditorStateChange = (newEditorState) => {
       setEditorState(newEditorState);
@@ -56,7 +33,7 @@ const TextEditor = () => {
         return html;
     };
 
-    console.log(getHtmlFromEditor());
+    // console.log(getHtmlFromEditor());
 
   return (
     <Editor

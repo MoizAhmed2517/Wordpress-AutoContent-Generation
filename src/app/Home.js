@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 // Icons
 import SourceIcon from '@mui/icons-material/Source';
@@ -6,10 +7,11 @@ import SendIcon from '@mui/icons-material/Send';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // Material UI components
-import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography } from '@mui/material';
+import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, CircularProgress } from '@mui/material';
 import TextEditor from '../components/editor/TextEditor';
 import DropDown from '../components/miscellaneous/DropDown';
 import Confirmation from '../components/modal/Confirmation';
+import { green } from '@mui/material/colors';
 
 const options = [
   { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
@@ -34,6 +36,10 @@ const Home = () => {
 
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [dropDownValue, setDropDownValue] = React.useState('');
+  const [prompt, setPrompt] = React.useState('');
+  const [promptResponse, setPromptResponse] = React.useState('Hey! I am a dummy text. You can generate text or type any topic of your choice. The fun part is that you can tune it as you need.');
+  const [isPending, setIsPending] = React.useState(false);
+  const [blogHeading, setBlogHeading] = React.useState('');
 
   const handleConfirmOpen = () => {
     setOpenConfirm(true);
@@ -42,6 +48,30 @@ const Home = () => {
   const handleConfirmClose = () => {
     setOpenConfirm(false);
   };
+
+  const handleGenerateContent = async () => {
+    const item = {
+      prompt: prompt
+    }
+
+    try {
+      setIsPending(true)
+      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-content/", item);
+      setIsPending(false);
+      let text = res.data.trim().replace(/^\n+/, '')
+      setPromptResponse(text);
+    } catch (error) {
+      console.error(error);
+    }
+
+  }
+
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  
+  //   }
+  //   fetchData();
+  // },[])
 
 
   return (
@@ -81,26 +111,48 @@ const Home = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={8}>
-                  <TextField fullWidth variant='outlined' placeholder="Write more details" label="Looking to write something special" />
+                  <TextField fullWidth variant='outlined' placeholder="Write more details" label="Looking to write something special" onChange={(event) => setPrompt(event.target.value)} />
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={4}>
-                  <Button
-                    endIcon={<SourceIcon />}
-                    fullWidth
-                    variant='contained'
-                    size="large"
-                    sx={{
-                      height: '100%',
-                      bgcolor: '#ff9100',
-                      '&:hover': {
-                        bgcolor: '#ff6d00',
-                        boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
-                      }
-                    }}
-                  > 
-                  Generate
-                  </Button>
+
+                  <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
+                    <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+                      <Button
+                        endIcon={isPending ? "" : <SourceIcon />}
+                        fullWidth
+                        variant='contained'
+                        size="large"
+                        sx={{
+                          height: '100%',
+                          width: '100%',
+                          bgcolor: '#ff9100',
+                          '&:hover': {
+                            bgcolor: '#ff6d00',
+                            boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+                          }
+                        }}
+                        onClick={handleGenerateContent}
+                        disabled={isPending}
+                      > 
+                        { isPending ? (
+                          <CircularProgress 
+                            size={24}
+                            sx={{
+                              color: '#fff',
+                              position: 'absolute',
+                              top: '50%',
+                              left: '50%',
+                              marginTop: '-12px',
+                              marginLeft: '-12px',
+                            }}
+                          />
+                          ) : "Generate"
+                        }
+                      </Button>
+                    </Box>
+                  </Box>
+                  
                 </Grid>
 
                 <Grid item xs={12}>
@@ -110,15 +162,19 @@ const Home = () => {
                     borderRadius: '5px',
                     minHeight: '230px'
                   }}>
-                    <TextEditor />
+                    <TextEditor content={promptResponse} />
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={6}>
+                <Grid item xs={12} sm={6} md={4}>
                   <DropDown data={options} label="Topic" placeholder="Select your topic" valueSet={setDropDownValue} />
                 </Grid>
 
-                <Grid item xs={12} sm={6} md={6}>
+                <Grid item xs={12} sm={6} md={4}>
+                  <TextField fullWidth variant='outlined' placeholder="Write blog heading" label="Blog Heading" onChange={(event) => setBlogHeading(event.target.value)} />
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={4}>
                   <Button 
                     endIcon={<SendIcon />} 
                     fullWidth 

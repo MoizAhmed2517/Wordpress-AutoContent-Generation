@@ -20,9 +20,9 @@ const CompetitorTracking = () => {
     // APIs
 
     React.useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = () => {
           try {
-            const response = await axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
+            const response = axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
             console.log(response.data);
             // Handle the response data
           } catch (error) {

@@ -7,33 +7,60 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SourceIcon from '@mui/icons-material/Source';
 
 // Material UI components
-import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, Card, CardContent } from '@mui/material';
+import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, Card, CardContent, CircularProgress } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import MDTableGridTopic from '../components/tables/MDTableGridTopic';
-
-const options = [
-    { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
-    { label: 'Sustainable Fashion and Eco-friendly Brands - Ethical Manufacturing Practices' },
-    { label: 'Mindfulness and Meditation Practices - Mindfulness Meditation' },
-    { label: 'Digital Marketing Strategies for Small Businesses - Social Media Marketing' },
-    { label: 'Home Organization and Decluttering Tips - Minimalist Living' },
-    { label: 'Renewable Energy Technologies and Innovations - Solar Power' },
-    { label: 'Effective Time Management Techniques - Prioritization and Planning' },
-    { label: 'Healthy Cooking and Nutritious Recipes - Plant-Based Diet' },
-    { label: 'Personal Finance and Investment Strategies - Budgeting and Saving Tips' },
-    { label: 'DIY Crafts and Creative Projects - Paper Crafts' },
-    { label: 'Cybersecurity Best Practices for Individuals and Businesses - Password Security' },
-    { label: 'Travel Destinations Off the Beaten Path - Adventure Travel' },
-    { label: 'Effective Communication Skills for Professionals - Active Listening' },
-    { label: 'Mental Health and Self-Care Practices - Stress Management Techniques' },
-    { label: 'Fitness and Workout Routines for Busy Individuals - High-Intensity Interval Training (HIIT)' }
-]
+import axios from 'axios';
 
 const TrendingTopic = () => {
 
     const [selectCountry, setSelectCountry] = React.useState('');
     const [selectTopic, setSelectTopic] = React.useState('');
-    const country = React.useMemo(() => countryList ().getData(), [])
+    const [options, setOptions] = React.useState([]);
+    const [isPending, setIsPending] = React.useState(false);
+    const [content, setContent] = React.useState({});
+
+    const country = React.useMemo(() => {
+        const options = countryList().getData();
+        const usaOption = options.find(option => option.value === 'US');
+        const otherOptions = options.filter(option => option.value !== 'US').sort((a, b) => a.label.localeCompare(b.label));
+        return [usaOption, ...otherOptions];
+    }, [])
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/ ");
+                const newOptions = res.data.map(item => {
+                    const article = item.topic_name + " - " + item.sub_topic
+                    return {
+                        label: article
+                    }
+                })
+                setOptions(newOptions);
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        fetchData();
+    },[])
+
+    const handleGenerateContent = async () => {
+        const item = {
+            country: selectCountry.label,
+            topic: selectTopic.label,
+        }
+    
+        try {
+            setIsPending(true)
+            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-trending-topic/", item);
+            setIsPending(false);
+            setContent(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
 
     return (
         <Box sx={{ flexGrow: 0, p: 0.5, marginLeft: 8  }}>
@@ -78,7 +105,7 @@ const TrendingTopic = () => {
                             id="combo-box-demo"
                             options={country}
                             renderInput={(params) => <TextField {...params} label="Select Country" />}
-                            onChange={(event, value) => setSelectCountry(event, value)}
+                            onChange={(event, value) => setSelectCountry(value)}
                         />
 
                     </Grid>
@@ -96,21 +123,42 @@ const TrendingTopic = () => {
                     </Grid>
 
                     <Grid item xs={12} md={2}>
-                        <Button
-                            endIcon={<SourceIcon />}
-                            variant='contained' 
-                            fullWidth 
-                            sx={{
-                                height: '100%',
-                                bgcolor: '#ff9100',
-                                '&:hover': {
-                                    bgcolor: '#ff6d00',
-                                    boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
+                        <Box sx={{ display: 'flex', width: '100%', height: '100%' }}>
+                            <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+                                <Button
+                                    endIcon={isPending ? "" : <SourceIcon />}
+                                    fullWidth
+                                    variant='contained'
+                                    size="large"
+                                    sx={{
+                                    height: '100%',
+                                    width: '100%',
+                                    bgcolor: '#ff9100',
+                                    '&:hover': {
+                                        bgcolor: '#ff6d00',
+                                        boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
                                     }
-                                }} 
-                            >
-                            Generate
-                        </Button>
+                                    }}
+                                    onClick={handleGenerateContent}
+                                    disabled={isPending}
+                                > 
+                                    { isPending ? (
+                                    <CircularProgress 
+                                        size={24}
+                                        sx={{
+                                        color: '#fff',
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                        }}
+                                    />
+                                    ) : "Generate"
+                                    }
+                                </Button>
+                            </Box>
+                        </Box>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -123,7 +171,7 @@ const TrendingTopic = () => {
                                     <TrendingUpIcon sx={{ color: "rgba(0,0,0,0.8)" }} />
                                 </Stack>
                             </CardContent>
-                            <CardContent sx={{ mt: -2.5 }}><MDTableGridTopic /></CardContent>
+                            <CardContent sx={{ mt: -2.5 }}><MDTableGridTopic context={content} /></CardContent>
                         </Card>
                     </Grid>
 

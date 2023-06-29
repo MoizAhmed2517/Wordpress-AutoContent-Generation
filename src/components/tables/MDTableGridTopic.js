@@ -42,25 +42,25 @@ function createData(id, topic, descr ) {
   return { id, topic, descr };
 }
 
-const rows = [
-    createData(1, 'Cryptocurrency Regulation', 'With the increasing popularity of cryptocurrencies like Bitcoin and Ethereum, governments around the world are grappling with how to regulate this new form of digital currency to protect investors and ensure financial stability.'),
-    createData(2, 'Artificial Intelligence in Healthcare', 'AI is revolutionizing the healthcare industry by aiding in disease diagnosis, drug discovery, and patient monitoring. It has the potential to improve patient outcomes and reduce healthcare costs.'),
-    createData(3, 'Climate Change Activism', 'The urgency of climate change has spurred a global movement for action. Activists are calling for sustainable practices, renewable energy adoption, and policy changes to combat the environmental crisis.'),
-    createData(4, 'Virtual Reality Gaming', 'Virtual reality (VR) gaming is gaining momentum with immersive experiences and realistic graphics. It offers gamers a whole new level of engagement and interactivity.'),
-    createData(5, 'Remote Work Revolution', 'The COVID-19 pandemic has accelerated the adoption of remote work globally. Companies are embracing remote work policies, leading to changes in work dynamics, productivity, and work-life balance.'),
-    createData(6, 'Space Exploration', 'Private space companies like SpaceX and Blue Origin are pushing the boundaries of space exploration. With missions to Mars, lunar landings, and satellite launches, humanity\'s presence in space is rapidly expanding.'),
-    createData(7, 'Mental Health Awareness', 'Increasing awareness about mental health issues has prompted conversations and initiatives aimed at reducing stigma, providing support, and improving access to mental healthcare services.'),
-    createData(8, 'Sustainable Fashion', 'Consumers are becoming more conscious of the environmental impact of fast fashion. Sustainable fashion focuses on ethical sourcing, eco-friendly production methods, and promoting fair labor practices.'),
-    createData(9, 'Plant-Based and Alternative Protein', 'The rise of plant-based diets and alternative protein sources, such as lab-grown meat, is driven by concerns about animal welfare, health benefits, and sustainability.'),
-    createData(10, '5G Technology', 'The deployment of 5G networks promises faster speeds, reduced latency, and enhanced connectivity, paving the way for advancements in autonomous vehicles, Internet of Things (IoT), and smart cities.'),
-    createData(11, 'Electric Vehicles', 'The shift towards electric vehicles (EVs) is gaining traction as a means to reduce carbon emissions and combat climate change. EVs offer greater energy efficiency and lower environmental impact compared to traditional gasoline-powered cars.'),
-    createData(12, 'Online Learning and EdTech', 'The pandemic forced a rapid shift to online learning, leading to the growth of educational technology platforms. These platforms offer personalized learning experiences, accessible education, and skill development opportunities.'),
-    createData(13, 'Influencer Culture and Brand Partnerships', 'Social media influencers have become powerful marketing channels, leading to collaborations between brands and popular influencers to reach wider audiences and promote products or services.'),
-    createData(14, 'Biohacking and Personal Optimization', 'Biohacking involves using science, technology, and lifestyle modifications to optimize physical and mental performance. It encompasses practices such as nootropics, intermittent fasting, and wearables to track health data.'),
-    createData(15, 'Drone Technology', 'Drones are being utilized across various industries, including delivery services, aerial photography, agriculture, and disaster management. Their versatility and efficiency make them a trending topic in technology and innovation.')
-  ];
+let rows = [
+    // createData(1, 'Cryptocurrency Regulation', 'With the increasing popularity of cryptocurrencies like Bitcoin and Ethereum, governments around the world are grappling with how to regulate this new form of digital currency to protect investors and ensure financial stability.'),
+    // createData(2, 'Artificial Intelligence in Healthcare', 'AI is revolutionizing the healthcare industry by aiding in disease diagnosis, drug discovery, and patient monitoring. It has the potential to improve patient outcomes and reduce healthcare costs.'),
+    // createData(3, 'Climate Change Activism', 'The urgency of climate change has spurred a global movement for action. Activists are calling for sustainable practices, renewable energy adoption, and policy changes to combat the environmental crisis.'),
+    // createData(4, 'Virtual Reality Gaming', 'Virtual reality (VR) gaming is gaining momentum with immersive experiences and realistic graphics. It offers gamers a whole new level of engagement and interactivity.'),
+    // createData(5, 'Remote Work Revolution', 'The COVID-19 pandemic has accelerated the adoption of remote work globally. Companies are embracing remote work policies, leading to changes in work dynamics, productivity, and work-life balance.'),
+    // createData(6, 'Space Exploration', 'Private space companies like SpaceX and Blue Origin are pushing the boundaries of space exploration. With missions to Mars, lunar landings, and satellite launches, humanity\'s presence in space is rapidly expanding.'),
+    // createData(7, 'Mental Health Awareness', 'Increasing awareness about mental health issues has prompted conversations and initiatives aimed at reducing stigma, providing support, and improving access to mental healthcare services.'),
+    // createData(8, 'Sustainable Fashion', 'Consumers are becoming more conscious of the environmental impact of fast fashion. Sustainable fashion focuses on ethical sourcing, eco-friendly production methods, and promoting fair labor practices.'),
+    // createData(9, 'Plant-Based and Alternative Protein', 'The rise of plant-based diets and alternative protein sources, such as lab-grown meat, is driven by concerns about animal welfare, health benefits, and sustainability.'),
+    // createData(10, '5G Technology', 'The deployment of 5G networks promises faster speeds, reduced latency, and enhanced connectivity, paving the way for advancements in autonomous vehicles, Internet of Things (IoT), and smart cities.'),
+    // createData(11, 'Electric Vehicles', 'The shift towards electric vehicles (EVs) is gaining traction as a means to reduce carbon emissions and combat climate change. EVs offer greater energy efficiency and lower environmental impact compared to traditional gasoline-powered cars.'),
+    // createData(12, 'Online Learning and EdTech', 'The pandemic forced a rapid shift to online learning, leading to the growth of educational technology platforms. These platforms offer personalized learning experiences, accessible education, and skill development opportunities.'),
+    // createData(13, 'Influencer Culture and Brand Partnerships', 'Social media influencers have become powerful marketing channels, leading to collaborations between brands and popular influencers to reach wider audiences and promote products or services.'),
+    // createData(14, 'Biohacking and Personal Optimization', 'Biohacking involves using science, technology, and lifestyle modifications to optimize physical and mental performance. It encompasses practices such as nootropics, intermittent fasting, and wearables to track health data.'),
+    // createData(15, 'Drone Technology', 'Drones are being utilized across various industries, including delivery services, aerial photography, agriculture, and disaster management. Their versatility and efficiency make them a trending topic in technology and innovation.')
+];
 
-const MDTableGridTopic = () => {
+const MDTableGridTopic = (props) => {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -68,6 +68,10 @@ const MDTableGridTopic = () => {
   const [isloading, setIsLoading] = React.useState([]);
   const [enable, setEnable] = React.useState(true);
   const [color, setColor] = React.useState("primary");
+
+  Object.entries(props.context).map((item, index) => {
+    rows.push(createData(index+1, item[0], item[1]))
+  })
 
   const dummyText = 'Hi! Dummy content is generated';
   const { enqueueSnackbar } = useSnackbar();

@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import axios from 'axios';
 
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -9,6 +10,28 @@ import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, A
 import MDTableGridTopicList from '../components/tables/MDTableGridTopicList';
 
 const BlogTopic = () => {
+
+    const [ topic, setTopic ] = React.useState("");
+    const [ subTopic, setSubTopic ] = React.useState("")
+
+    const handleAddTopic = async () => {
+        const item = {
+            "user": 1,
+            "topic_name": topic,
+            "sub_topic": subTopic,
+        }
+
+        try {
+            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/topics/ ", item);
+            setTopic("")
+            setSubTopic("")
+            console.log(res);
+            window.location.reload(false);
+          } catch (error) {
+            console.error(error);
+          }
+    }
+
     return (
         <Box sx={{ flexGrow: 0, p: 0.5, marginLeft: 8  }}>
             <Stack>
@@ -46,11 +69,11 @@ const BlogTopic = () => {
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <TextField fullWidth variant="outlined" label="Topic" placeholder="Write main topic"  />
+                        <TextField fullWidth variant="outlined" label="Topic" placeholder="Write main topic" onChange={(e) => setTopic(e.target.value)}  />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
-                        <TextField fullWidth variant="outlined" label="Sub Topic" placeholder="Write any sub-topic"  />
+                        <TextField fullWidth variant="outlined" label="Sub Topic" placeholder="Write any sub-topic" onChange={(e) => setSubTopic(e.target.value)}  />
                     </Grid>
 
                     <Grid item xs={12} md={4}>
@@ -66,7 +89,7 @@ const BlogTopic = () => {
                                 boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12)',
                             }
                             }}
-                            // onClick={handleConfirmOpen}
+                            onClick={handleAddTopic}
                         >
                             ADD
                         </Button>
