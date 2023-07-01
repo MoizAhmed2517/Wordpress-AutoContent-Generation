@@ -4,6 +4,7 @@ import axios from 'axios';
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { useSnackbar } from 'notistack';
 
 // Material UI components
 import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, Card, CardContent } from '@mui/material';
@@ -16,21 +17,21 @@ const CompetitorTracking = () => {
 
 
     const [openConfirm, setOpenConfirm] = React.useState(false);
+    const [competitorList, setCompetitorList] = React.useState([]);
+
+    const { enqueueSnackbar } = useSnackbar();
 
     // APIs
 
-    React.useEffect(() => {
-        const fetchData = () => {
+    React.useMemo(() => {
+        const fetchData = async (variant="error") => {
           try {
-            const response = axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
-            console.log(response.data);
-            // Handle the response data
+            const response = await axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
+            setCompetitorList(response.data);
           } catch (error) {
-            console.error(error);
-            // Handle the error
+            enqueueSnackbar(error, { variant });
           }
         };
-    
         fetchData();
       }, []);
 
@@ -104,7 +105,7 @@ const CompetitorTracking = () => {
                                 </Stack>
                                 
                             </CardContent>
-                            <CardContent sx={{ mt: -2.5 }}><MDTableGridList /></CardContent>
+                            <CardContent sx={{ mt: -2.5 }}><MDTableGridList context={competitorList} /></CardContent>
                         </Card>
                     </Grid>
 

@@ -16,6 +16,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { IconButton, Box, Tooltip } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 
 const columns = [
   { id: 'id', label: "ID", minWidth: 20 },
@@ -68,12 +69,15 @@ const MDTableGridTopic = (props) => {
   const [isloading, setIsLoading] = React.useState([]);
   const [enable, setEnable] = React.useState(true);
   const [color, setColor] = React.useState("primary");
+  const [generatedData, setGeneratedData] = React.useState('')
 
-  Object.entries(props.context).map((item, index) => {
-    rows.push(createData(index+1, item[0], item[1]))
-  })
+  React.useMemo(() => {
+    rows = []
+    Object.entries(props.context).map((item, index) => {
+      rows.push(createData(index+1, item[0], item[1]))
+    })
+  },[props.context]);
 
-  const dummyText = 'Hi! Dummy content is generated';
   const { enqueueSnackbar } = useSnackbar();
 
   const handleChangePage = (event, newPage) => {
@@ -86,26 +90,36 @@ const MDTableGridTopic = (props) => {
   };
 
   const handleCopy = (variant) => {
-      navigator.clipboard.writeText(dummyText)
-    .then(() => {
-      enqueueSnackbar('Content Copied on Clipboard', { variant });
-    })
-    .catch((error) => {
-      console.log('Error copying text to clipboard', error);
-    });
+    navigator.clipboard.writeText(generatedData)
+      .then(() => {
+        enqueueSnackbar('Content Copied on Clipboard', { variant });
+      })
+      .catch((error) => {
+        console.log('Error copying text to clipboard', error);
+      });
   }
 
-  const handleGenerate = (row) => {
+  const handleGenerate = async (row, variant="error") => {
+
+      const item = {
+        prompt: row.topic
+      }
+
       setIsLoading([...isloading, row.id]);
       setSelectedRow(row)
       setEnable(false);
-      setTimeout(() => {
-          setColor('success');
-      }, 3500);
-      setTimeout(() => {
-          setIsLoading((prevLoading) => prevLoading.filter((id) => id !== row.id));
-          setColor('primary');
-      }, 5000);
+      try {
+        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-topic-content/", item);
+        setGeneratedData(res.data);
+        setIsLoading((prevLoading) => prevLoading.filter((id) => id !== row.id));
+      } catch (error) {
+        enqueueSnackbar('Content Copied on Clipboard', { variant });
+        setIsLoading((prevLoading) => prevLoading.filter((id) => id !== row.id));
+      }
+      // setTimeout(() => {
+          
+      //     setColor('primary');
+      // }, 5000);
   }
 
     return (

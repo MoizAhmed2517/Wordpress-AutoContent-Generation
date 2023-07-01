@@ -1,5 +1,6 @@
 import React from 'react'
 import countryList  from 'react-select-country-list';
+import { useSnackbar } from 'notistack';
 
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -19,6 +20,8 @@ const TrendingTopic = () => {
     const [options, setOptions] = React.useState([]);
     const [isPending, setIsPending] = React.useState(false);
     const [content, setContent] = React.useState({});
+
+    const { enqueueSnackbar } = useSnackbar();
 
     const country = React.useMemo(() => {
         const options = countryList().getData();
@@ -45,7 +48,7 @@ const TrendingTopic = () => {
         fetchData();
     },[])
 
-    const handleGenerateContent = async () => {
+    const handleGenerateContent = async (variant="error") => {
         const item = {
             country: selectCountry.label,
             topic: selectTopic.label,
@@ -57,7 +60,8 @@ const TrendingTopic = () => {
             setIsPending(false);
             setContent(res.data);
         } catch (error) {
-            console.error(error);
+            enqueueSnackbar(error, { variant });
+            setIsPending(false);
         }
 
     }
@@ -88,7 +92,7 @@ const TrendingTopic = () => {
 
                         <Stack direction="row" spacing={1}>
                             <Typography variant='button' sx={{ color: 'rgba(0,0,0,0.5)', fontWeight: 'bold', fontSize: 18 }}>
-                                Welcome to BlogBot's Tredning Topic Section ! 
+                                Welcome to BlogBot's Trending Topic Section ! 
                             </Typography>
                             <Tooltip title={"In this tab you can select the trending topic based on the topic and can generate article"} placement='bottom-end'>
                             <InfoOutlinedIcon sx={{ pt: 0.5, color: 'rgba(0,0,0,0.5)' }} />

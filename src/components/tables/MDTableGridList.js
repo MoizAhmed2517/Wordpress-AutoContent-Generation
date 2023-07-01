@@ -17,7 +17,7 @@ import { IconButton, Box, Tooltip } from '@mui/material';
 import DeleteConfirmation from '../modal/DeleteConfirmation';
 
 const columns = [
-  { id: 'id', label: "ID", minWidth: 20 },
+  { id: 'id', label: "S#", minWidth: 20 },
   { id: 'name', label: 'Competitor Blog', minWidth: 50 },
   { id: 'descr', label: 'Description', width: 250 },
 ];
@@ -37,39 +37,46 @@ const edit = {
 }
 
 
-function createDate(id, name, descr, link ) {
-    return { id, name, descr, link };
+function createData(id, name, descr, link, blog_id ) {
+    return { id, name, descr, link, blog_id };
   }
   
-const rows = [
-    createDate(1, "The Minimalists", "Inspiring and practical tips on embracing a minimalist lifestyle.", "https://www.theminimalists.com"),
-    createDate(2, "Brain Pickings", "Curated insights on art, science, literature, and philosophy for intellectual exploration.", "https://www.brainpickings.org"),
-    createDate(3, "Lifehacker", "Expert advice and tips for optimizing your life, covering topics like technology, productivity, and self-improvement.", "https://lifehacker.com"),
-    createDate(4, "Smitten Kitchen", "Delicious recipes, kitchen experiments, and delightful food photography.", "https://smittenkitchen.com"),
-    createDate(5, "Zen Habits", "A blog focused on simplicity, mindfulness, and finding balance in life.", "https://zenhabits.net"),
-    createDate(6, "The Sartorialist", "Capturing street style fashion from around the world with stunning photography.", "http://www.thesartorialist.com"),
-    createDate(7, "The Financial Diet", "Practical advice on personal finance, budgeting, and saving money.", "https://thefinancialdiet.com"),
-    createDate(8, "Mashable", "News, trends, and entertainment in the digital and tech world.", "https://mashable.com"),
-    createDate(9, "Cup of Jo", "A lifestyle blog covering topics like motherhood, relationships, travel, and design.", "https://cupofjo.com"),
-    createDate(10, "TED Blog", "Insights and ideas worth sharing from the world of TED Talks.", "https://blog.ted.com"),
-    createDate(11, "The Everygirl", "A resourceful blog for career-driven women, providing advice on work, life, and style.", "https://theeverygirl.com"),
-    createDate(12, "TechCrunch", "Reporting on the latest technology news, startups, and product reviews.", "https://techcrunch.com"),
-    createDate(13, "A Beautiful Mess", "DIY projects, home decor inspiration, and creative lifestyle ideas.", "https://abeautifulmess.com"),
-    createDate(14, "The Art of Manliness", "A blog dedicated to reviving the lost art of manliness, covering topics like self-improvement, relationships, and hobbies.", "https://www.artofmanliness.com"),
-    createDate(15, "The Pioneer Woman", "Recipes, home cooking tips, and stories from the life of a modern pioneer woman.", "https://thepioneerwoman.com")
+let rows = [
+    // createData(1, "The Minimalists", "Inspiring and practical tips on embracing a minimalist lifestyle.", "https://www.theminimalists.com"),
+    // createData(2, "Brain Pickings", "Curated insights on art, science, literature, and philosophy for intellectual exploration.", "https://www.brainpickings.org"),
+    // createData(3, "Lifehacker", "Expert advice and tips for optimizing your life, covering topics like technology, productivity, and self-improvement.", "https://lifehacker.com"),
+    // createData(4, "Smitten Kitchen", "Delicious recipes, kitchen experiments, and delightful food photography.", "https://smittenkitchen.com"),
+    // createData(5, "Zen Habits", "A blog focused on simplicity, mindfulness, and finding balance in life.", "https://zenhabits.net"),
+    // createData(6, "The Sartorialist", "Capturing street style fashion from around the world with stunning photography.", "http://www.thesartorialist.com"),
+    // createData(7, "The Financial Diet", "Practical advice on personal finance, budgeting, and saving money.", "https://thefinancialdiet.com"),
+    // createData(8, "Mashable", "News, trends, and entertainment in the digital and tech world.", "https://mashable.com"),
+    // createData(9, "Cup of Jo", "A lifestyle blog covering topics like motherhood, relationships, travel, and design.", "https://cupofjo.com"),
+    // createData(10, "TED Blog", "Insights and ideas worth sharing from the world of TED Talks.", "https://blog.ted.com"),
+    // createData(11, "The Everygirl", "A resourceful blog for career-driven women, providing advice on work, life, and style.", "https://theeverygirl.com"),
+    // createData(12, "TechCrunch", "Reporting on the latest technology news, startups, and product reviews.", "https://techcrunch.com"),
+    // createData(13, "A Beautiful Mess", "DIY projects, home decor inspiration, and creative lifestyle ideas.", "https://abeautifulmess.com"),
+    // createData(14, "The Art of Manliness", "A blog dedicated to reviving the lost art of manliness, covering topics like self-improvement, relationships, and hobbies.", "https://www.artofmanliness.com"),
+    // createData(15, "The Pioneer Woman", "Recipes, home cooking tips, and stories from the life of a modern pioneer woman.", "https://thepioneerwoman.com")
 ];
 
-const MDTableGridList = () => {
+const MDTableGridList = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openConfirm, setOpenConfirm] = React.useState(false);
-  const [delValue, setDelValue] = React.useState('');
+  const [delValue, setDelValue] = React.useState({});
 
   const handleConfirmClose = () => {
       setOpenConfirm(false);
   };
 
-  const handleChangePage = (newPage) => {
+  React.useMemo(() => {
+    rows = [];
+    props.context.map((item, index) => {
+      rows.push(createData(index+1, item.competitor_name, item.competitor_description, item.competitor_blog_link, item.id))
+    })
+  },[props.context]);
+
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
@@ -79,7 +86,11 @@ const MDTableGridList = () => {
   };
 
   const handleDelete = (row) => {
-      setDelValue(row.name)
+    const item = {
+      id: row.blog_id,
+      name: row.name
+    }
+      setDelValue(item)
       setOpenConfirm(true);
   }
 
@@ -164,7 +175,7 @@ const MDTableGridList = () => {
 
       </TableContainer>
 
-      <DeleteConfirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} topic={delValue} />
+      <DeleteConfirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} delKey={delValue} />
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25, 100]}

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 // Material UI Icons
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -15,8 +16,8 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { IconButton, Box, Tooltip } from '@mui/material';
-import DeleteConfirmation from '../modal/DeleteConfirmation';
 import AddNewTopics from '../modal/AddNewTopics';
+import DeleteConfirmationTopic from '../modal/DeleteConfirmationTopic';
 
 const columns = [
   { id: 'id', label: "ID", minWidth: 20 },
@@ -39,8 +40,8 @@ const edit = {
     align: 'center',
 }
 
-function createData(id, mTopic, sTopic, date ) {
-  return { id, mTopic, sTopic, date };
+function createData(id, mTopic, sTopic, date, topic_id ) {
+  return { id, mTopic, sTopic, date, topic_id };
 }
   
 // let rows = [];
@@ -51,15 +52,17 @@ const MDTableGridTopicList = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-  const [delValue, setDelValue] = React.useState('');
+  const [delValue, setDelValue] = React.useState({});
   const [defaultTopic, setDefaultTopic] = React.useState({});
   const [rows, setRows] = React.useState([]);
 
-  React.useEffect(() => {
+  const { enqueueSnackbar } = useSnackbar();
+
+  React.useMemo(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/");
-        const newRows = res.data.map((item) => {
+        const newRows = res.data.map((item, index) => {
           let dt = new Date(item.datetime);
           let formattedDate =
             ("0" + dt.getDate()).slice(-2) +
@@ -67,11 +70,11 @@ const MDTableGridTopicList = (props) => {
             ("0" + (dt.getMonth() + 1)).slice(-2) +
             "-" +
             dt.getFullYear();
-          return createData(item.id, item.topic_name, item.sub_topic, formattedDate);
+          return createData(index+1, item.topic_name, item.sub_topic, formattedDate, item.id);
         });
         setRows(newRows); // Update the rows state
       } catch (e) {
-        console.log(e);
+        enqueueSnackbar(e);
       }
     };
     fetchData();
@@ -85,7 +88,7 @@ const MDTableGridTopicList = (props) => {
     setOpenEdit(false);
   };
 
-  const handleChangePage = (newPage) => {
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
@@ -95,16 +98,14 @@ const MDTableGridTopicList = (props) => {
   };
 
   const handleDelete = (row) => {
-      setDelValue(row.mTopic)
-      setOpenConfirm(true);
+    setDelValue(row)
+    setOpenConfirm(true);
   }
 
   const handleView = (row) => {
     setDefaultTopic(row)
     setOpenEdit(true)
   }
-
-  console.log(rows)
   
   return (
     <Box sx={{ width: '100%', overflow: 'hidden' }}>
@@ -183,7 +184,7 @@ const MDTableGridTopicList = (props) => {
 
       </TableContainer>
 
-      <DeleteConfirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} topic={delValue} />
+      <DeleteConfirmationTopic openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} delKey={delValue} />
 
       <AddNewTopics openModal={openEdit} handleClose={handleEditClose} setOpen={setOpenEdit} topic={defaultTopic} />
 

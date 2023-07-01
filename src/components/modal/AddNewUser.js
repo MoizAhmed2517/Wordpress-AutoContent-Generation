@@ -1,4 +1,8 @@
 import React from 'react'
+import axios from 'axios';
+import { useSnackbar } from 'notistack';
+
+// mui component
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,11 +13,42 @@ import { Grid, TextField } from '@mui/material';
 
 const AddNewUser = (props) => {
   const [scroll, setScroll] = React.useState('paper');
+  const [name, setName] = React.useState('');
+  const [descr, setDescr] = React.useState('');
+  const [url, setUrl] = React.useState('');
+  const [isValidUrl, setIsValidUrl] = React.useState(false);
 
-  const handleClose = () => {
-    // navigate(props.nav)
-    props.setOpen(false);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleUrl = (event) => {
+    const inputValue = event.target.value;
+    try {
+      new URL(inputValue);
+      setUrl(inputValue);
+      setIsValidUrl(false);
+    } catch (error) {
+      setUrl(inputValue);
+      setIsValidUrl(true);
     }
+
+  }
+
+  const handleClose = async (variant="error") => {
+    const item = {
+      user: 1,
+      competitor_name: name,
+      competitor_description: descr,
+      competitor_blog_link: url,
+    }
+    console.log(item);
+    try {
+      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/competitors/", item);
+      props.setOpen(false);
+      window.location.reload(false);
+    } catch (error) {
+      enqueueSnackbar(error, {variant} );
+    } 
+  }
 
   return (
     <Dialog
@@ -28,18 +63,18 @@ const AddNewUser = (props) => {
         <DialogContent dividers={scroll === 'paper'}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-                <TextField fullWidth variant="outlined" label="Competitor Name" placeholder="Write the blog name you want to track" />
+                <TextField fullWidth variant="outlined" label="Competitor Name" placeholder="Write the blog name you want to track" onChange={event => setName(event.target.value)} />
             </Grid>
             <Grid item xs={12}>
-                <TextField fullWidth multiline variant="outlined" label="Descrption" placeholder="Write descrption of the blog" />
+                <TextField fullWidth multiline variant="outlined" label="Descrption" placeholder="Write descrption of the blog" onChange={event => setDescr(event.target.value)} />
             </Grid>
             <Grid item xs={12}>
-                <TextField fullWidth variant="outlined" label="Web URL" placeholder="place a web url (Also include https://)" />
+                <TextField fullWidth variant="outlined" label="Web URL" placeholder="Place a web url (write in this way https://www.xyz.com)" helperText="URL need to be valid else you can't add competitor" onChange={handleUrl} error={isValidUrl} />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => props.setOpen(false)}>Cancel</Button>
           <Button onClick={handleClose}>Add</Button>
         </DialogActions>
       </Dialog>
