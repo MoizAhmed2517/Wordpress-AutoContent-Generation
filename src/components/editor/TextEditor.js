@@ -38,7 +38,6 @@ const TextEditor = (props) => {
   return (
     <Editor
         editorState={editorState}
-        // toolbar={toolbarOptions}
         wrapperClassName="wrapper-class"
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"

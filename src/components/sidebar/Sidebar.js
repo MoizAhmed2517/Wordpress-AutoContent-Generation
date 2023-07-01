@@ -125,13 +125,17 @@ const Sidebar = () => {
 
     // States
     const [tabColor, setTabColor] = React.useState(0);
-    const [activeTab, setActiveTab] = React.useState(0);
+    const [activeTab, setActiveTab] = React.useState(Number(sessionStorage.getItem('TabIndex')) || 0);
     const [activeTabColors, setActiveTabColors] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [notificationMenu, setNotificationMenu] = React.useState(null);
     const [avatarMenu, setAvatarMenu] = React.useState(null);
     const openAvatar = Boolean(avatarMenu);
     const openNoti = Boolean(notificationMenu);
+
+    React.useEffect(() => {
+        sessionStorage.setItem("TabIndex", activeTab)
+    },[activeTab]);
 
     // State functions and mapping functions
     const handleTabClick = (index) => {
@@ -298,7 +302,7 @@ const Sidebar = () => {
                     {
                         rows.map((row, i) => (
 
-                            <MenuItem onClick={handleCloseNoti} component={Link} to="/login" sx={{ mb: 2 }} key={i}>
+                            <MenuItem onClick={handleCloseNoti} component={Link} to="/competitor-tracking" sx={{ mb: 2 }} key={i}>
                                 <ListItemIcon>
                                     <WarningAmberOutlinedIcon sx={{ color: 'rgba(0,0,0,0.6)', height: 30, width: 25 }} />
                                 </ListItemIcon>

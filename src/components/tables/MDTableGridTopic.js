@@ -106,10 +106,10 @@ const MDTableGridTopic = (props) => {
       }
 
       setIsLoading([...isloading, row.id]);
-      setSelectedRow(row)
       setEnable(false);
       try {
         const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-topic-content/", item);
+        setSelectedRow(row)
         setGeneratedData(res.data);
         setIsLoading((prevLoading) => prevLoading.filter((id) => id !== row.id));
       } catch (error) {
