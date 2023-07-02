@@ -79,7 +79,7 @@ const Login = () => {
             }
           })
           .then(response =>{
-            Cookies.set("Info", response.data)
+            Cookies.set("Info", JSON.stringify(response.data))
             navigate('/home')
           }).catch(err =>{
             enqueueSnackbar(err)

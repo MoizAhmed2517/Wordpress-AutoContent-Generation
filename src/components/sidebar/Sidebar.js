@@ -35,6 +35,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack, Badge } from '@mui/material';
 import RefreshToken from '../navigation/RefreshToken';
+import { useSnackbar } from 'notistack';
 
 const drawerWidth = 240;
 
@@ -131,6 +132,7 @@ const Sidebar = () => {
     const [activeTabColors, setActiveTabColors] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [notificationMenu, setNotificationMenu] = React.useState(null);
+    const [notification, setNotification] = React.useState({});
     const [avatarMenu, setAvatarMenu] = React.useState(null);
     const openAvatar = Boolean(avatarMenu);
     const openNoti = Boolean(notificationMenu);
@@ -138,6 +140,31 @@ const Sidebar = () => {
     React.useEffect(() => {
         sessionStorage.setItem("TabIndex", activeTab)
     },[activeTab]);
+
+    React.useMemo(() => {
+
+        const fetchData = async () => {
+
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `JWT ${Cookies.get("access_token")}`
+                    }
+                }
+                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/notifications/", config)
+
+                console.log(res.data)
+
+
+            } catch (err) {
+
+            }
+
+        }
+
+        fetchData();
+
+    }, [])
 
     // State functions and mapping functions
     const handleTabClick = (index) => {

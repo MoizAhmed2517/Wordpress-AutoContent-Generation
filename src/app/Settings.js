@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import profileImage from '../static/images/profilepic.png'
 import SaveIcon from '@mui/icons-material/Save';
-
+import Cookies from 'js-cookie';
 // Material UI components
 import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -11,12 +11,13 @@ const Settings = () => {
     const [disableConfirm, setDisableConfirm] = useState(true);
     const [disableConfirmWP, setDisableConfirmWP] = useState(true);
     const [imageData, setImageData] = useState(null);
+    const userInfo = JSON.parse(Cookies.get("Info"))
 
     const handleImageUpload = (data) => {
         setImageData(data);
     };
 
-    // console.log(loginData);
+    console.log(userInfo);
 
     const handlePassword = (event) => {
       setDisableConfirm(false);
@@ -62,7 +63,7 @@ const Settings = () => {
                                 <IconButton >
                                     <Avatar
                                     alt="Remy Sharp"
-                                    src={imageData !== null ? imageData : profileImage}
+                                    src={imageData !== null ? imageData : userInfo.image !== "" ? profileImage : userInfo.image}
                                     sx={{ 
                                         width: 200, 
                                         height: 200,
@@ -77,16 +78,22 @@ const Settings = () => {
                             <DragDrop onImageUpload={handleImageUpload} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={"John"} />
+                            <TextField fullWidth variant='standard' placeholder="First name" label="First name" defaultValue={userInfo.first_name} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="xyz@gmail.com" label="Email" defaultValue={'johndesouza@xysmail.com'} />
+                            <TextField fullWidth variant='standard' placeholder="Last name" label="Last name" defaultValue={userInfo.last_name} />
                         </Grid>
-                        {/* <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Change Password" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePassword} />
-                        </Grid> */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={"test"} />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <TextField fullWidth variant='standard' placeholder="xyz@gmail.com" label="Email" defaultValue={userInfo.email} />
+                        </Grid>
                         <Grid item xs={12} sm={6} md={4}>
                             <TextField fullWidth variant='standard' label="Password" type='password' />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <TextField fullWidth variant='standard' label="Confirm Password" type='password' disabled={disableConfirm} />
                         </Grid>
 
                         {/* Wordpress credentials */}
