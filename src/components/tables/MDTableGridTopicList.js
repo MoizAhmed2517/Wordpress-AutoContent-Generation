@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+import Cookies from 'js-cookie'
 
 // Material UI Icons
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -61,7 +62,13 @@ const MDTableGridTopicList = (props) => {
   React.useMemo(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/");
+        const config = {
+          headers: {
+            Authorization: `JWT ${Cookies.get("access_token")}`
+          }
+        }
+        const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/", config);
+        console.log(res)
         const newRows = res.data.map((item, index) => {
           let dt = new Date(item.datetime);
           let formattedDate =

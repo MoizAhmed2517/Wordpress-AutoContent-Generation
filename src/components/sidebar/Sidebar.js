@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import profileImage from '../../static/images/profilepic.png';
-
+import axios from 'axios';
 // Icons
 import QueryStatsOutlinedIcon from '@mui/icons-material/QueryStatsOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
@@ -34,6 +34,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack, Badge } from '@mui/material';
+import RefreshToken from '../navigation/RefreshToken';
 
 const drawerWidth = 240;
 
@@ -122,6 +123,7 @@ const rows = [
 const Sidebar = () => {
     const theme = useTheme();
     const timeoutRef = React.useRef(null);
+    const navigate = useNavigate();
 
     // States
     const [tabColor, setTabColor] = React.useState(0);
@@ -171,6 +173,31 @@ const Sidebar = () => {
     const handleCloseAvatar = () => {
         setAvatarMenu(null);
     }
+
+    const handleLogout = () => {
+        setAvatarMenu(null);
+
+        const cookies = Object.keys(Cookies.get());
+        cookies.forEach(cookie => {
+            Cookies.remove(cookie);
+        });
+        navigate('/login')
+        
+        // const item ={
+        //     accessToken: Cookies.get('access_token'),
+        // }
+        // axios.post("https://mujtabatasneem.pythonanywhere.com/jwt/destroy/", item)
+        // .then((response) => {
+        //     const cookies = Object.keys(Cookies.get());
+        //     cookies.forEach(cookie => {
+        //         Cookies.remove(cookie);
+        //     });
+        //     navigate('/login')
+        // })
+        // .catch((error) => {
+        //     console.error(error);
+        // })    
+    }
   
     return (
       <Box sx={{ display: 'flex' }}>
@@ -178,6 +205,8 @@ const Sidebar = () => {
 
         <AppBar position="fixed" sx={{ background: colors[tabColor] }}>
           <Toolbar>
+
+            <RefreshToken />
 
             <IconButton
               color="inherit"
@@ -271,7 +300,7 @@ const Sidebar = () => {
                             Settings
                         </ListItemText>
                     </MenuItem>
-                    <MenuItem onClick={handleCloseAvatar} component={Link} to="/login">
+                    <MenuItem onClick={handleLogout}>
                         <ListItemIcon>
                             <LockIcon />
                         </ListItemIcon>

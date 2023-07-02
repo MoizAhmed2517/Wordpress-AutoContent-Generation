@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
-
+import Cookies from 'js-cookie';
 // Mui component
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -25,7 +25,12 @@ const AddNewTopics = (props) => {
         sub_topic: subTopic,
       }
       try {
-        const res = await axios.put(`http://mujtabatasneem.pythonanywhere.com/api/topics/${props.topic.id}/`, item)
+        const config = {
+          headers: {
+              Authorization: `JWT ${Cookies.get("access_token")}`
+          }
+        }
+        const res = await axios.put(`http://mujtabatasneem.pythonanywhere.com/api/topics/${props.topic.id}/`, item, config)
         enqueueSnackbar(res)
         props.setOpen(false);
         window.location.reload(false);

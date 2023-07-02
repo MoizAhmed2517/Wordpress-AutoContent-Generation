@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
-
+import Cookies from 'js-cookie';
 // mui component
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -15,7 +15,12 @@ const DeleteConfirmationTopic = (props) => {
 
     const handleModalClose = async () => {
         try {
-            const res = await axios.delete(`http://mujtabatasneem.pythonanywhere.com/api/competitors/${props.delKey.topic_id}/`)
+            const config = {
+              headers: {
+                  Authorization: `JWT ${Cookies.get("access_token")}`
+              }
+            }
+            const res = await axios.delete(`http://mujtabatasneem.pythonanywhere.com/api/competitors/${props.delKey.topic_id}/`, config)
             props.setOpen(false);
             window.location.reload(false);
         } catch (error) {

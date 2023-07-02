@@ -1,4 +1,9 @@
-import * as React from 'react';
+import React, { createContext } from 'react';
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom';
+// Mui component
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +17,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+
 
 function createData(id, userType, email, password) {
     return {id, userType, email, password};
@@ -36,14 +41,15 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 const Login = () => {
     const navigate  = useNavigate();
     const [credentials, setCredentials] = React.useState("");
     const [access, setAccess] = React.useState(false);
+    const [loginData, setLoginData] = React.useState({});
+
+    const { enqueueSnackbar } = useSnackbar();
   
     React.useEffect(() => {
       dummyUsers.map(item => {
@@ -53,14 +59,41 @@ const Login = () => {
       })
     }, [credentials])
   
-  
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
+      const item = {
+        username: data.get('email'),
+        password: data.get("password"),
+      }
+
+      try {
+        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/auth/jwt/create/", item)
+        Cookies.set("referesh_token", res.data.refresh)
+        Cookies.set("access_token", res.data.access)
+
+        if (res.data.access) {
+          axios.get("http://mujtabatasneem.pythonanywhere.com/auth/users/me/", {
+            headers: {
+              Authorization: `JWT ${Cookies.get("access_token")}`
+            }
+          })
+          .then(response =>{
+            Cookies.set("Info", response.data)
+            navigate('/home')
+          }).catch(err =>{
+            enqueueSnackbar(err)
+          })
+        }
+
+      } catch (err) {
+        console.log(err);
+      }
       setCredentials({
         email: data.get('email'),
         password: data.get('password'),
       });
+
     };
   
     return (
@@ -87,7 +120,7 @@ const Login = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Username"
                 name="email"
                 autoComplete="email"
                 autoFocus

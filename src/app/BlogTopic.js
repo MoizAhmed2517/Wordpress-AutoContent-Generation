@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import Cookies from 'js-cookie'
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
@@ -22,7 +22,12 @@ const BlogTopic = () => {
         }
 
         try {
-            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/topics/ ", item);
+            const config = {
+                headers: {
+                    Authorization: `JWT ${Cookies.get("access_token")}`
+                }
+            }
+            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/topics/ ", item, config);
             setTopic("")
             setSubTopic("")
             console.log(res);
