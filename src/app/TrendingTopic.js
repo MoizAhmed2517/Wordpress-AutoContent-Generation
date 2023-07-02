@@ -1,7 +1,7 @@
 import React from 'react'
 import countryList  from 'react-select-country-list';
 import { useSnackbar } from 'notistack';
-
+import Cookies from 'js-cookie';
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -33,7 +33,12 @@ const TrendingTopic = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/ ");
+                const config = {
+                    headers: {
+                        Authorization: `JWT ${Cookies.get("access_token")}`
+                    }
+                }
+                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/", config);
                 const newOptions = res.data.map(item => {
                     const article = item.topic_name + " - " + item.sub_topic
                     return {
@@ -55,8 +60,13 @@ const TrendingTopic = () => {
         }
     
         try {
+            const config = {
+                headers: {
+                    Authorization: `JWT ${Cookies.get("access_token")}`
+                }
+            }
             setIsPending(true)
-            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-trending-topic/", item);
+            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-trending-topic/", item, config);
             setIsPending(false);
             setContent(res.data);
         } catch (error) {

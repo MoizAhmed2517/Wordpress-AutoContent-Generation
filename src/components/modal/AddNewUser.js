@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+import Cookies from 'js-cookie';
 
 // mui component
 import Button from '@mui/material/Button';
@@ -42,7 +43,12 @@ const AddNewUser = (props) => {
     }
     console.log(item);
     try {
-      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/competitors/", item);
+      const config = {
+        headers: {
+            Authorization: `JWT ${Cookies.get("access_token")}`
+        }
+      }
+      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/competitors/", item, config);
       props.setOpen(false);
       window.location.reload(false);
     } catch (error) {

@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-
+import Cookies from 'js-cookie'
 // Icons
 import SourceIcon from '@mui/icons-material/Source';
 import SendIcon from '@mui/icons-material/Send';
@@ -55,8 +55,13 @@ const Home = () => {
     }
 
     try {
+      const config = {
+        headers: {
+            Authorization: `JWT ${Cookies.get("access_token")}`
+        }
+      }
       setIsPending(true)
-      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-content/", item);
+      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-content/", item, config);
       setIsPending(false);
       let text = res.data.trim().replace(/^\n+/, '')
       setPromptResponse(text);
@@ -65,13 +70,6 @@ const Home = () => {
     }
 
   }
-
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  
-  //   }
-  //   fetchData();
-  // },[])
 
 
   return (

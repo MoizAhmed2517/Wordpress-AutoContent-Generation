@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const JWT_REFRESH_INTERVAL = 1 * 60 * 1000; // 4 minutes
+const JWT_REFRESH_INTERVAL = 2 * 60 * 1000; // 4 minutes
 
 const RefreshToken = () => {
 

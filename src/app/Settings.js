@@ -41,6 +41,7 @@ const Settings = () => {
                 }}
                 >
                     <Grid container spacing={2}>
+                        
                         {/* Personal information */}
                         <Grid item xs={12} sx={{ mb : 2 }}>
                             <Box sx={{
@@ -76,23 +77,18 @@ const Settings = () => {
                             <DragDrop onImageUpload={handleImageUpload} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="First Name" label="First Name" defaultValue={"John"} />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="Second Name" label="Second Name" defaultValue={"DeSouza"} />
+                            <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={"John"} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
                             <TextField fullWidth variant='standard' placeholder="xyz@gmail.com" label="Email" defaultValue={'johndesouza@xysmail.com'} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="09XXX-XXXXXX" label="Contact#" defaultValue={'+41 XXX XXXXX'} />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        {/* <Grid item xs={12} sm={6} md={4}>
                             <TextField fullWidth variant='standard' label="Change Password" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePassword} />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Confirm Password" type='password' disabled={disableConfirm} />
+                            <TextField fullWidth variant='standard' label="Password" type='password' />
                         </Grid>
+
                         {/* Wordpress credentials */}
                         <Grid item xs={12} sx={{ mt: 4, mb : 1 }}>
                             <Box sx={{
@@ -108,18 +104,18 @@ const Settings = () => {
                                 </Typography>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={12}>
-                            <TextField fullWidth variant='standard' placeholder="Blog url" label="URL" />
+                        <Grid item xs={12} sm={6} md={4}>
+                            <TextField fullWidth variant='standard' placeholder="Blog url" label="Wordrpress blog URL" />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="Email" label="email" defaultValue={"abc@climatebiz.com"} />
+                            <TextField fullWidth variant='standard' placeholder="Wordpress User" label="email" defaultValue={"abc@climatebiz.com"} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Change Password" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePasswordWP} />
+                            <TextField fullWidth variant='standard' label="Wordpress Key" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePasswordWP} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        {/* <Grid item xs={12} sm={6} md={4}>
                             <TextField fullWidth variant='standard' label="Confirm Password" type='password' disabled={disableConfirmWP} />
-                        </Grid>
+                        </Grid> */}
 
                         {/* CHATGPT credentials */}
                         <Grid item xs={12} sx={{ mt: 4, mb : 1 }}>
@@ -137,13 +133,7 @@ const Settings = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
-                            <TextField fullWidth variant='standard' placeholder="Place API endpoint here" label="API endpoint" />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6}>
-                            <TextField fullWidth variant='standard' placeholder="Email" label="email" defaultValue={"abc@climatebiz.com"} />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={6}>
-                            <TextField fullWidth variant='standard' label="Change Password" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePasswordWP} />
+                            <TextField fullWidth variant='standard' placeholder="Place API endpoint here" label="API key" />
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12}>

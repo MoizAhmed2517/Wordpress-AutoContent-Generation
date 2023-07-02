@@ -42,17 +42,17 @@ const Signup = () => {
     
       return (
         <ThemeProvider theme={defaultTheme}>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
+          <Container component="main" maxWidth="md">
+            {/* <CssBaseline /> */}
             <Box
               sx={{
-                marginTop: 8,
+                marginTop: 9.5,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -60,28 +60,19 @@ const Signup = () => {
               </Typography>
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="firstName"
-                      required
-                      fullWidth
-                      id="firstName"
-                      label="First Name"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  {/* user Name */}
+                  <Grid item xs={12} md={4}>
                     <TextField
                       required
                       fullWidth
-                      id="lastName"
-                      label="Last Name"
-                      name="lastName"
-                      autoComplete="family-name"
+                      id="username"
+                      label="Username"
+                      name="email"
+                      autoComplete="username"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* Email */}
+                  <Grid item xs={12} md={4}>
                     <TextField
                       required
                       fullWidth
@@ -91,7 +82,8 @@ const Signup = () => {
                       autoComplete="email"
                     />
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* password */}
+                  <Grid item xs={12} md={4}>
                     <TextField
                       required
                       fullWidth
@@ -102,12 +94,70 @@ const Signup = () => {
                       autoComplete="new-password"
                     />
                   </Grid>
+                  {/* confirm password
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="confirm password"
+                      label="Confirm password"
+                      type="password"
+                      id="confirm-password"
+                      autoComplete="confirm-password"
+                    />
+                  </Grid> */}
+                  {/* chatgpt key */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="APIkey"
+                      label="Open AI API key"
+                      id="apikey"
+                      autoComplete="apiKey"
+                    />
+                  </Grid>
+                  {/* blog url */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="blogURL"
+                      label="Wordpress Blog URL"
+                      id="blog-url"
+                      autoComplete="blogurl"
+                    />
+                  </Grid>
+                  {/* blog email */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="blogURLemail"
+                      label="Wordpress Blog Email Address"
+                      id="blog-email"
+                      autoComplete="blog-email"
+                    />
+                  </Grid>
+                  {/* blog password */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="blogURLpass"
+                      label="Wordpress Blog Password"
+                      id="blog-pass"
+                      autoComplete="blog-pass"
+                    />
+                  </Grid>
+                  {/* Remember */}
                   <Grid item xs={12}>
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
                       label="I want to receive inspiration, marketing promotions and updates via email."
                     />
                   </Grid>
+
                 </Grid>
                 <Button
                   type="submit"

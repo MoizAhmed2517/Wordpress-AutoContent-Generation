@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-
+import Cookies from 'js-cookie'
 // Icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -26,7 +26,12 @@ const CompetitorTracking = () => {
     React.useMemo(() => {
         const fetchData = async (variant="error") => {
           try {
-            const response = await axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/');
+            const config = {
+                headers: {
+                    Authorization: `JWT ${Cookies.get("access_token")}`
+                }
+            }
+            const response = await axios.get('http://mujtabatasneem.pythonanywhere.com/api/competitors/', config);
             setCompetitorList(response.data);
           } catch (error) {
             enqueueSnackbar(error, { variant });

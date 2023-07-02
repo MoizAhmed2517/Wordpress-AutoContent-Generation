@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SnackbarProvider, useSnackbar } from 'notistack';
-
+import Cookies from 'js-cookie';
 // Material UI Icons
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
@@ -108,7 +108,12 @@ const MDTableGridTopic = (props) => {
       setIsLoading([...isloading, row.id]);
       setEnable(false);
       try {
-        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-topic-content/", item);
+        const config = {
+          headers: {
+              Authorization: `JWT ${Cookies.get("access_token")}`
+          }
+        }
+        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-topic-content/", item, config);
         setSelectedRow(row)
         setGeneratedData(res.data);
         setIsLoading((prevLoading) => prevLoading.filter((id) => id !== row.id));

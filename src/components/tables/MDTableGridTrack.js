@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useSnackbar } from 'notistack';
+import Cookies from 'js-cookie';
 
 // Material UI Icons
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -149,7 +150,12 @@ const MDTableGridTrack = () => {
       setEnable(false)
       setIsLoadingAI([...isloadingAI, row.id]);
       try {
-        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/regenerate-blog/", item);
+        const config = {
+          headers: {
+              Authorization: `JWT ${Cookies.get("access_token")}`
+          }
+        }
+        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/regenerate-blog/", item, config);
         setRegenerate(res.data);
         setSelectedRow(row)
         setIsLoadingAI((prevLoading) => prevLoading.filter((id) => id !== row.id));

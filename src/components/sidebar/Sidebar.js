@@ -181,6 +181,7 @@ const Sidebar = () => {
         cookies.forEach(cookie => {
             Cookies.remove(cookie);
         });
+        sessionStorage.setItem("TabIndex", 0)
         navigate('/login')
         
         // const item ={
