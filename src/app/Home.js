@@ -11,7 +11,6 @@ import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography, C
 import TextEditor from '../components/editor/TextEditor';
 import DropDown from '../components/miscellaneous/DropDown';
 import Confirmation from '../components/modal/Confirmation';
-import { green } from '@mui/material/colors';
 
 const options = [
   { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
