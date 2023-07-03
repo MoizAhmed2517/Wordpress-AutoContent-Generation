@@ -77,23 +77,17 @@ const Settings = () => {
                         <Grid item xs={12} sm={8} md={8} sx={{ mt: 2.5 }}>
                             <DragDrop onImageUpload={handleImageUpload} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={6}>
                             <TextField fullWidth variant='standard' placeholder="First name" label="First name" defaultValue={userInfo.first_name} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={6}>
                             <TextField fullWidth variant='standard' placeholder="Last name" label="Last name" defaultValue={userInfo.last_name} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={6}>
                             <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={"test"} />
                         </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
+                        <Grid item xs={12} sm={6} md={6}>
                             <TextField fullWidth variant='standard' placeholder="xyz@gmail.com" label="Email" defaultValue={userInfo.email} />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Password" type='password' />
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Confirm Password" type='password' disabled={disableConfirm} />
                         </Grid>
 
                         {/* Wordpress credentials */}

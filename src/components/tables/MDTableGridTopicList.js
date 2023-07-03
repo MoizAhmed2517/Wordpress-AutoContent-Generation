@@ -67,8 +67,7 @@ const MDTableGridTopicList = (props) => {
             Authorization: `JWT ${Cookies.get("access_token")}`
           }
         }
-        const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/", config);
-        console.log(res)
+        const res = await axios.get("https://blog.enerlyticslab.com/api/topics/", config);
         const newRows = res.data.map((item, index) => {
           let dt = new Date(item.datetime);
           let formattedDate =

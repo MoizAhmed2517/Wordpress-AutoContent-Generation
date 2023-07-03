@@ -60,7 +60,7 @@ const Home = () => {
         }
       }
       setIsPending(true)
-      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-content/", item, config);
+      const res = await axios.post("https://blog.enerlyticslab.com/api/generate-content/", item, config);
       setIsPending(false);
       let text = res.data.trim().replace(/^\n+/, '')
       setPromptResponse(text);

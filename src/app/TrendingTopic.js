@@ -38,7 +38,7 @@ const TrendingTopic = () => {
                         Authorization: `JWT ${Cookies.get("access_token")}`
                     }
                 }
-                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/topics/", config);
+                const res = await axios.get("https://blog.enerlyticslab.com/api/topics/", config);
                 const newOptions = res.data.map(item => {
                     const article = item.topic_name + " - " + item.sub_topic
                     return {
@@ -66,7 +66,7 @@ const TrendingTopic = () => {
                 }
             }
             setIsPending(true)
-            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/generate-trending-topic/", item, config);
+            const res = await axios.post("https://blog.enerlyticslab.com/api/generate-trending-topic/", item, config);
             setIsPending(false);
             setContent(res.data);
         } catch (error) {

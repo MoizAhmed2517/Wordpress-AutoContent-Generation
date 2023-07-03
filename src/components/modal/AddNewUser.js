@@ -48,7 +48,7 @@ const AddNewUser = (props) => {
             Authorization: `JWT ${Cookies.get("access_token")}`
         }
       }
-      const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/competitors/", item, config);
+      const res = await axios.post("https://blog.enerlyticslab.com/api/competitors/", item, config);
       props.setOpen(false);
       window.location.reload(false);
     } catch (error) {

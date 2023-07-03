@@ -20,9 +20,8 @@ const AddNewTopics = (props) => {
 
     const handleClose = async () => {
       const item = {
-        user: 1,
         topic_name: props.topic.mTopic || mainTopic,
-        sub_topic: subTopic,
+        sub_topic: subTopic || props.topic.sTopic,
       }
       try {
         const config = {
@@ -30,7 +29,7 @@ const AddNewTopics = (props) => {
               Authorization: `JWT ${Cookies.get("access_token")}`
           }
         }
-        const res = await axios.put(`http://mujtabatasneem.pythonanywhere.com/api/topics/${props.topic.id}/`, item, config)
+        const res = await axios.put(`https://blog.enerlyticslab.com/api/topics/${props.topic.topic_id}/`, item, config)
         enqueueSnackbar(res)
         props.setOpen(false);
         window.location.reload(false);

@@ -68,12 +68,12 @@ const Login = () => {
       }
 
       try {
-        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/auth/jwt/create/", item)
+        const res = await axios.post("https://blog.enerlyticslab.com/auth/jwt/create/", item)
         Cookies.set("referesh_token", res.data.refresh)
         Cookies.set("access_token", res.data.access)
 
         if (res.data.access) {
-          axios.get("http://mujtabatasneem.pythonanywhere.com/auth/users/me/", {
+          axios.get("https://blog.enerlyticslab.com/auth/users/me/", {
             headers: {
               Authorization: `JWT ${Cookies.get("access_token")}`
             }

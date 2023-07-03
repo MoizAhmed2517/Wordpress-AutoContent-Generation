@@ -16,9 +16,8 @@ const BlogTopic = () => {
 
     const handleAddTopic = async () => {
         const item = {
-            "user": 1,
             "topic_name": topic,
-            "sub_topic": subTopic,
+            "sub_topic": subTopic || "None",
         }
 
         try {
@@ -27,7 +26,7 @@ const BlogTopic = () => {
                     Authorization: `JWT ${Cookies.get("access_token")}`
                 }
             }
-            const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/topics/ ", item, config);
+            const res = await axios.post("https://blog.enerlyticslab.com/api/topics/ ", item, config);
             setTopic("")
             setSubTopic("")
             console.log(res);

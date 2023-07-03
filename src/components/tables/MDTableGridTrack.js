@@ -144,6 +144,7 @@ const MDTableGridTrack = () => {
     }
 
     const handleAI = async (row) => {
+      setColor("primary")
       const item = {
         prompt: scraper
       }
@@ -155,11 +156,12 @@ const MDTableGridTrack = () => {
               Authorization: `JWT ${Cookies.get("access_token")}`
           }
         }
-        const res = await axios.post("http://mujtabatasneem.pythonanywhere.com/api/regenerate-blog/", item, config);
+        const res = await axios.post("https://blog.enerlyticslab.com/api/regenerate-blog/", item, config);
         setRegenerate(res.data);
         setSelectedRow(row)
         setIsLoadingAI((prevLoading) => prevLoading.filter((id) => id !== row.id));
       } catch (e) {
+        setColor("error")
         enqueueSnackbar(e)
       }
     }

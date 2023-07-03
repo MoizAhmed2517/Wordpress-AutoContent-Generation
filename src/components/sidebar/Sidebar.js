@@ -151,9 +151,9 @@ const Sidebar = () => {
                         Authorization: `JWT ${Cookies.get("access_token")}`
                     }
                 }
-                const res = await axios.get("http://mujtabatasneem.pythonanywhere.com/api/notifications/", config)
+                const res = await axios.get("https://blog.enerlyticslab.com/api/notifications/", config)
 
-                console.log(res.data)
+                // console.log(res.data)
 
 
             } catch (err) {

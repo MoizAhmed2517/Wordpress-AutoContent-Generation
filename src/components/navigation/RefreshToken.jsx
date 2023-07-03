@@ -9,7 +9,7 @@ const RefreshToken = () => {
     useEffect(() => {
         const refreshAccessToken = async () => {
             try {
-                const response = await axios.post('https://mujtabatasneem.pythonanywhere.com/auth/jwt/refresh', {
+                const response = await axios.post('https://blog.enerlyticslab.com/auth/jwt/refresh', {
                     refresh: Cookies.get("referesh_token")
                 });
                 Cookies.set('access_token', response.data.access);

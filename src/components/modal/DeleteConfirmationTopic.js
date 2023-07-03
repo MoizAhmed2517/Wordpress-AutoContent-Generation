@@ -20,7 +20,7 @@ const DeleteConfirmationTopic = (props) => {
                   Authorization: `JWT ${Cookies.get("access_token")}`
               }
             }
-            const res = await axios.delete(`http://mujtabatasneem.pythonanywhere.com/api/competitors/${props.delKey.topic_id}/`, config)
+            const res = await axios.delete(`https://blog.enerlyticslab.com/api/topics/${props.delKey.topic_id}/`, config)
             props.setOpen(false);
             window.location.reload(false);
         } catch (error) {

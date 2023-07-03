@@ -68,6 +68,8 @@ const MDTableGridList = (props) => {
       setOpenConfirm(false);
   };
 
+  console.log(props.context)
+
   React.useMemo(() => {
     rows = [];
     props.context.map((item, index) => {
