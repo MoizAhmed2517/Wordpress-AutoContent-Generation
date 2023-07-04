@@ -1,16 +1,56 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useSnackbar } from 'notistack';
 
 const Confirmation = (props) => {
 
-  const handleModalClose = () => {
-      // navigate(props.nav)
+  const { enqueueSnakbar } = useSnackbar();
+  const [blog, setBlog] = useState({})
+  const [selectId, setSelectId] = useState([]);
+
+  const findKeyByValue = (value) => {
+    for (const key in props.blogData) {
+      if (props.blogData.hasOwnProperty(key) && props.blogData[key] === value) {
+        return key;
+      }
+    }
+    return null;
+  };
+  
+
+  const handleModalClose = async () => {
+    const key = findKeyByValue(props.dropValue.label);
+    const category = [];
+    category.push(key);
+    const item = {
+      "status": "publish",
+      title: props.title,
+      content: props.response,
+      categories: category
+    }
+    const config = {
+      headers: {
+          Authorization: `JWT ${Cookies.get("access_token")}`
+      }
+    }
+
+    try {
+      const response = await axios.post("https://blog.enerlyticslab.com/api/wp-post/", item, config)
+      console.log(response)
       props.setOpen(false);
+    } catch (err) {
+      enqueueSnakbar(err);
+      props.setOpen(false);
+    }
+
+    
   }
 
 
@@ -30,7 +70,7 @@ const Confirmation = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleModalClose}>Cancel</Button>
+          <Button onClick={() => props.setOpen(false)}>Cancel</Button>
           <Button onClick={handleModalClose} autoFocus>
             Post
           </Button>

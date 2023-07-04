@@ -11,29 +11,27 @@ const TextEditor = (props) => {
 
     useEffect(() => {
       setEditorState(EditorState.createWithContent(ContentState.createFromText(props.content)));
-      // console.log(props.content);
     },[props.content])
 
     const onEditorStateChange = (newEditorState) => {
       setEditorState(newEditorState);
     };
   
-    const getTextFromEditor = () => {
-        const contentState = editorState.getCurrentContent();
-        const rawContentState = convertToRaw(contentState);
-        const text = rawContentState.blocks
-          .map((block) => block.text)
-          .join('\n');
-        return text;
-    };
+    // const getTextFromEditor = () => {
+    //     const contentState = editorState.getCurrentContent();
+    //     const rawContentState = convertToRaw(contentState);
+    //     const text = rawContentState.blocks
+    //       .map((block) => block.text)
+    //       .join('\n');
+    //     return text;
+    // };
 
     const getHtmlFromEditor = () => {
         const contentState = editorState.getCurrentContent();
         const html = draftToHtml(convertToRaw(contentState));
         return html;
     };
-
-    // console.log(getHtmlFromEditor());
+    props.htmlContent(getHtmlFromEditor())
 
   return (
     <Editor

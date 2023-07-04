@@ -111,13 +111,20 @@ function createData(id, heading, days, notification){
     return {id, heading, days, notification}
 }
 
+function dateConverter(date){
+    const currentDate = new Date(); // Current date
+    const targetDate = new Date(date); // Your target date
+    const timeDifference = currentDate.getTime() - targetDate.getTime(); // Difference in milliseconds
+    return Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+}
+
 const rows = [
-    createData(1, 'Notifcation Heading 1', ' 2 days ago', 'Your competitor climatebiz has posted new blog at solar energy system'),
-    createData(2, 'Notifcation Heading 2', ' 4 days ago', 'Your competitor rst has posted new blog at abc '),
-    createData(3, 'Notifcation Heading 3', ' 3 days ago', 'Your competitor xyz has posted new blog at abc solar'),
-    createData(4, 'Notifcation Heading 4', ' 2 days ago', 'Your competitor climatebiz has posted new blog at energy system'),
-    createData(5, 'Notifcation Heading 5', ' 1 days ago', 'Your competitor mno has posted new blog at system'),
-    createData(6, 'Notifcation Heading 6', ' 9 days ago', 'Your competitor pqr has posted new blog at solar energy'),
+    // createData(1, 'Notifcation Heading 1', ' 2 days ago', 'Your competitor climatebiz has posted new blog at solar energy system'),
+    // createData(2, 'Notifcation Heading 2', ' 4 days ago', 'Your competitor rst has posted new blog at abc '),
+    // createData(3, 'Notifcation Heading 3', ' 3 days ago', 'Your competitor xyz has posted new blog at abc solar'),
+    // createData(4, 'Notifcation Heading 4', ' 2 days ago', 'Your competitor climatebiz has posted new blog at energy system'),
+    // createData(5, 'Notifcation Heading 5', ' 1 days ago', 'Your competitor mno has posted new blog at system'),
+    // createData(6, 'Notifcation Heading 6', ' 9 days ago', 'Your competitor pqr has posted new blog at solar energy'),
 ]
 
 
@@ -133,6 +140,7 @@ const Sidebar = () => {
     const [open, setOpen] = React.useState(false);
     const [notificationMenu, setNotificationMenu] = React.useState(null);
     const [notification, setNotification] = React.useState({});
+    const [lengthNoti, setLengthNoti] = React.useState(0);
     const [avatarMenu, setAvatarMenu] = React.useState(null);
     const openAvatar = Boolean(avatarMenu);
     const openNoti = Boolean(notificationMenu);
@@ -142,28 +150,24 @@ const Sidebar = () => {
     },[activeTab]);
 
     React.useMemo(() => {
-
         const fetchData = async () => {
-
             try {
                 const config = {
                     headers: {
                         Authorization: `JWT ${Cookies.get("access_token")}`
                     }
                 }
-                const res = await axios.get("https://blog.enerlyticslab.com/api/notifications/", config)
-
-                // console.log(res.data)
-
-
+                const res = await axios.get("https://blog.enerlyticslab.com/api/notification/", config)
+                console.log(res.data)
+                setLengthNoti(res.data.length)
+                res.data.map((val) => {
+                    rows.push(val)
+                });
             } catch (err) {
-
+                console.error(err)
             }
-
         }
-
         fetchData();
-
     }, [])
 
     // State functions and mapping functions
@@ -209,22 +213,7 @@ const Sidebar = () => {
             Cookies.remove(cookie);
         });
         sessionStorage.setItem("TabIndex", 0)
-        navigate('/login')
-        
-        // const item ={
-        //     accessToken: Cookies.get('access_token'),
-        // }
-        // axios.post("https://mujtabatasneem.pythonanywhere.com/jwt/destroy/", item)
-        // .then((response) => {
-        //     const cookies = Object.keys(Cookies.get());
-        //     cookies.forEach(cookie => {
-        //         Cookies.remove(cookie);
-        //     });
-        //     navigate('/login')
-        // })
-        // .catch((error) => {
-        //     console.error(error);
-        // })    
+        navigate('/login')  
     }
   
     return (
@@ -292,7 +281,7 @@ const Sidebar = () => {
                     <IconButton 
                         onClick={handleClickNoti}
                     >
-                        <Badge badgeContent={6} color="warning">
+                        <Badge badgeContent={lengthNoti} color="warning">
                             <NotificationsNoneOutlinedIcon sx={{ color: "#fff", height: 25, width: 25 }} />
                         </Badge>
                     </IconButton>
@@ -357,7 +346,7 @@ const Sidebar = () => {
                     }}
                 >
                     {
-                        rows.map((row, i) => (
+                        rows.slice(0, lengthNoti).map((row, i) => (
 
                             <MenuItem onClick={handleCloseNoti} component={Link} to="/competitor-tracking" sx={{ mb: 2 }} key={i}>
                                 <ListItemIcon>
@@ -367,16 +356,16 @@ const Sidebar = () => {
                                     primary={
                                         <Stack direction="row" spacing={1}>
                                             <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: "rgba(0,0,0,0.87)" }}>
-                                                {row.heading} |
+                                                {row.blog_title} |
                                             </Typography>
                                             <Typography variant="subtitle1" sx={{ fontSize: 12, color: "rgba(0,0,0,0.6)", pt: 0.6 }}>
-                                                {row.days}
+                                                {`${dateConverter(row.blog_post_time)} days ago`}
                                             </Typography>
                                         </Stack>
                                     }
                                     secondary={
                                         <Typography variant="subtitle2" sx={{ color: "rgba(0,0,0,0.6)", fontSize: 12, textDecoration: 'none', '&:hover': { textDecoration: 'underline' }, mt: -0.6 }}>
-                                            <CheckBoxIcon color='primary' sx={{ height: 15, width: 15, pt: 0.5 }} /> {row.notification}
+                                            <CheckBoxIcon color='primary' sx={{ height: 15, width: 15, pt: 0.5 }} /> {`Your competitor ${row.competitor_name} has posted new blog at ${row.blog_topic}`}
                                         </Typography>
                                     }
                                 />

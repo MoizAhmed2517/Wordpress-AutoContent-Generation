@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { Box, Stack, Grid, IconButton, TextField, Tooltip, Button, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import DragDrop from '../components/miscellaneous/DragDrop';
+import { useTheme } from '@emotion/react';
 
 const Settings = () => {
     const [disableConfirm, setDisableConfirm] = useState(true);
@@ -13,11 +14,11 @@ const Settings = () => {
     const [imageData, setImageData] = useState(null);
     const userInfo = JSON.parse(Cookies.get("Info"))
 
+    console.log(userInfo);
+
     const handleImageUpload = (data) => {
         setImageData(data);
     };
-
-    console.log(userInfo);
 
     const handlePassword = (event) => {
       setDisableConfirm(false);
@@ -106,13 +107,13 @@ const Settings = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="Blog url" label="Wordrpress blog URL" />
+                            <TextField fullWidth variant='standard' placeholder="Blog url" label="Wordrpress blog URL" defaultValue={userInfo.url}/>
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' placeholder="Wordpress User" label="email" defaultValue={"abc@climatebiz.com"} />
+                            <TextField fullWidth variant='standard' placeholder="Wordpress User" label="email" defaultValue={userInfo.wp_user} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={4}>
-                            <TextField fullWidth variant='standard' label="Wordpress Key" defaultValue={'xyz@gmail.com'} type='password' onChange={handlePasswordWP} />
+                            <TextField fullWidth variant='standard' label="Wordpress Key" defaultValue={userInfo.wp_key} />
                         </Grid>
                         {/* <Grid item xs={12} sm={6} md={4}>
                             <TextField fullWidth variant='standard' label="Confirm Password" type='password' disabled={disableConfirmWP} />
@@ -134,7 +135,7 @@ const Settings = () => {
                             </Box>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12}>
-                            <TextField fullWidth variant='standard' placeholder="Place API endpoint here" label="API key" />
+                            <TextField fullWidth variant='standard' placeholder="Place API endpoint here" label="API key" defaultValue={userInfo.chatgpt_key} />
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios';
 import Cookies from 'js-cookie'
+import { useSnackbar } from 'notistack';
 // Icons
 import SourceIcon from '@mui/icons-material/Source';
 import SendIcon from '@mui/icons-material/Send';
@@ -13,25 +14,9 @@ import DropDown from '../components/miscellaneous/DropDown';
 import Confirmation from '../components/modal/Confirmation';
 
 const options = [
-  { label: 'Artificial Intelligence in Healthcare - Diagnosis and Treatment Assistance' },
-  { label: 'Sustainable Fashion and Eco-friendly Brands - Ethical Manufacturing Practices' },
-  { label: 'Mindfulness and Meditation Practices - Mindfulness Meditation' },
-  { label: 'Digital Marketing Strategies for Small Businesses - Social Media Marketing' },
-  { label: 'Home Organization and Decluttering Tips - Minimalist Living' },
-  { label: 'Renewable Energy Technologies and Innovations - Solar Power' },
-  { label: 'Effective Time Management Techniques - Prioritization and Planning' },
-  { label: 'Healthy Cooking and Nutritious Recipes - Plant-Based Diet' },
-  { label: 'Personal Finance and Investment Strategies - Budgeting and Saving Tips' },
-  { label: 'DIY Crafts and Creative Projects - Paper Crafts' },
-  { label: 'Cybersecurity Best Practices for Individuals and Businesses - Password Security' },
-  { label: 'Travel Destinations Off the Beaten Path - Adventure Travel' },
-  { label: 'Effective Communication Skills for Professionals - Active Listening' },
-  { label: 'Mental Health and Self-Care Practices - Stress Management Techniques' },
-  { label: 'Fitness and Workout Routines for Busy Individuals - High-Intensity Interval Training (HIIT)' }
 ]
 
 const Home = () => {
-
 
   const [openConfirm, setOpenConfirm] = React.useState(false);
   const [dropDownValue, setDropDownValue] = React.useState('');
@@ -39,9 +24,46 @@ const Home = () => {
   const [promptResponse, setPromptResponse] = React.useState('Hey! I am a dummy text. You can generate text or type any topic of your choice. The fun part is that you can tune it as you need.');
   const [isPending, setIsPending] = React.useState(false);
   const [blogHeading, setBlogHeading] = React.useState('');
+  const [blogList, setBlogList] = React.useState([]);
+  const [htmlContent, setHtmlContent] = React.useState('')
+  const [color, setColor] = React.useState("primary")
+  const [blog, setBlog] = React.useState([]);
 
-  const handleConfirmOpen = () => {
+  const { enqueueSnakbar } = useSnackbar()
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        headers: {
+            Authorization: `JWT ${Cookies.get("access_token")}`
+        }
+      }
+      try {
+        const res = await axios.get("https://blog.enerlyticslab.com/api/wp-topic/", config)
+        const options = Object.entries(res.data).map(([key, value]) => ({
+          label: value
+        }));
+        setBlogList(options)
+      } catch (err) {
+        enqueueSnakbar(err);
+      }
+    }
+    fetchData();
+  },[]);
+
+  const handleConfirmOpen = async () => {
     setOpenConfirm(true);
+    const config = {
+      headers: {
+          Authorization: `JWT ${Cookies.get("access_token")}`
+      }
+    }
+    try {
+      const res = await axios.get("https://blog.enerlyticslab.com/api/wp-topic/", config)
+      setBlog(res.data)
+    } catch (err) {
+      enqueueSnakbar(err);
+    }
   };
 
   const handleConfirmClose = () => {
@@ -49,6 +71,7 @@ const Home = () => {
   };
 
   const handleGenerateContent = async () => {
+    setColor("primary");
     const item = {
       prompt: prompt
     }
@@ -65,11 +88,10 @@ const Home = () => {
       let text = res.data.trim().replace(/^\n+/, '')
       setPromptResponse(text);
     } catch (error) {
+      setColor("error");
       console.error(error);
     }
-
   }
-
 
   return (
     <Box sx={{ flexGrow: 0, p: 0.5, marginLeft: 8  }}>
@@ -133,7 +155,8 @@ const Home = () => {
                         disabled={isPending}
                       > 
                         { isPending ? (
-                          <CircularProgress 
+                          <CircularProgress
+                            color={color} 
                             size={24}
                             sx={{
                               color: '#fff',
@@ -159,12 +182,12 @@ const Home = () => {
                     borderRadius: '5px',
                     minHeight: '230px'
                   }}>
-                    <TextEditor content={promptResponse} />
+                    <TextEditor content={promptResponse} htmlContent={setHtmlContent} />
                   </Box>
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={4}>
-                  <DropDown data={options} label="Topic" placeholder="Select your topic" valueSet={setDropDownValue} />
+                  <DropDown data={blogList} label="Topic" placeholder="Select your topic" valueSet={setDropDownValue} />
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={4}>
@@ -190,7 +213,7 @@ const Home = () => {
                   </Button>
                 </Grid>
 
-                <Confirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} topic={dropDownValue} />
+                <Confirmation openModal={openConfirm} handleClose={handleConfirmClose} setOpen={setOpenConfirm} blogData={blog} dropValue={dropDownValue} title={blogHeading} response={htmlContent}  />
 
               </Grid>
             </Box>
