@@ -158,7 +158,7 @@ const Sidebar = () => {
                     }
                 }
                 const res = await axios.get("https://blog.enerlyticslab.com/api/notification/", config)
-                console.log(res.data)
+                // console.log(res.data)
                 setLengthNoti(res.data.length)
                 res.data.map((val) => {
                     rows.push(val)

@@ -35,16 +35,17 @@ const Confirmation = (props) => {
       content: props.response,
       categories: category
     }
+    console.log(item);
     const config = {
       headers: {
           Authorization: `JWT ${Cookies.get("access_token")}`
       }
     }
-
     try {
       const response = await axios.post("https://blog.enerlyticslab.com/api/wp-post/", item, config)
       console.log(response)
       props.setOpen(false);
+      window.location.reload(false);
     } catch (err) {
       enqueueSnakbar(err);
       props.setOpen(false);
