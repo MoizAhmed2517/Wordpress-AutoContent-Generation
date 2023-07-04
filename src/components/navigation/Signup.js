@@ -1,10 +1,7 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,6 +9,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom'
 
 function Copyright(props) {
     return (
@@ -31,13 +31,40 @@ const defaultTheme = createTheme();
 
 
 const Signup = () => {
+
+    const {enqueueSnackbar} = useSnackbar();
+    const navigate = useNavigate();
   
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-          email: data.get('email'),
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg4NTAwMDE0LCJpYXQiOjE2ODg0OTk3MTQsImp0aSI6ImFhMjQwYjNjZGU3ZDQwZDc4YjcyZDdlNDlkOTZmMTJlIiwidXNlcl9pZCI6MX0.HvrRNF_0uXR-7D-aj-NDcvBavnHRpT5sSFtD5wcE0R0"
+        const config = {
+          headers: {
+              Authorization: `JWT ${token}`
+          }
+        }
+        const item = ({
+          username: data.get('username'),
           password: data.get('password'),
+          email: data.get('email'),
+          url: data.get('blogURL'),
+          wp_user: data.get('blogURLemail'),
+          wp_key: data.get('blogURLpass'),
+          apiKey: data.get('APIkey'),
+        });
+        axios.post("https://blog.enerlyticslab.com/auth/users/", item)
+        .then((response) => {
+          console.log(response);
+          enqueueSnackbar("Successfully Sign Up!");
+          window.location.reload(false);
+          navigate("/login")
+        })
+        .catch((err) => {
+          if(err.response.data.password[0]){
+            enqueueSnackbar(err.response.data.password[0]);  
+          }
+          enqueueSnackbar(err)
         });
       };
     
@@ -68,7 +95,7 @@ const Signup = () => {
                       fullWidth
                       id="username"
                       label="Username"
-                      name="email"
+                      name="username"
                       autoComplete="username"
                     />
                   </Grid>
@@ -152,12 +179,12 @@ const Signup = () => {
                     />
                   </Grid>
                   {/* Remember */}
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
                       label="I want to receive inspiration, marketing promotions and updates via email."
                     />
-                  </Grid>
+                  </Grid> */}
 
                 </Grid>
                 <Button

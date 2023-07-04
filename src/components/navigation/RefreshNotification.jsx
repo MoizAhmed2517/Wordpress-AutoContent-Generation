@@ -3,19 +3,23 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useSnackbar } from 'notistack';
 
-const JWT_REFRESH_INTERVAL = 1.5 * 60 * 1000; // 2 minutes
+const JWT_REFRESH_INTERVAL = 0.5 * 60 * 1000; // 1 minutes
 
-const RefreshToken = () => {
+const RefreshNotification = () => {
 
     const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         const refreshAccessToken = async () => {
             try {
-                const response = await axios.post('https://blog.enerlyticslab.com/auth/jwt/refresh', {
-                    refresh: Cookies.get("referesh_token")
-                });
-                Cookies.set('access_token', response.data.access);
+                const config = {
+                    headers: {
+                        Authorization: `JWT ${Cookies.get("access_token")}`
+                    }
+                }
+                const res = await axios.get("https://blog.enerlyticslab.com/api/notification/", config)
+                Cookies.set('notification', JSON.stringify(res.data))
+                // console.log(res.data)
             } catch (error) {
                 enqueueSnackbar(error);
             }
@@ -30,4 +34,4 @@ const RefreshToken = () => {
   )
 }
 
-export default RefreshToken
+export default RefreshNotification

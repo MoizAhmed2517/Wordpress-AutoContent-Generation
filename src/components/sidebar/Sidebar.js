@@ -35,6 +35,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Stack, Badge } from '@mui/material';
 import RefreshToken from '../navigation/RefreshToken';
+import RefreshNotification from '../navigation/RefreshNotification';
 import { useSnackbar } from 'notistack';
 
 const drawerWidth = 240;
@@ -119,12 +120,6 @@ function dateConverter(date){
 }
 
 const rows = [
-    // createData(1, 'Notifcation Heading 1', ' 2 days ago', 'Your competitor climatebiz has posted new blog at solar energy system'),
-    // createData(2, 'Notifcation Heading 2', ' 4 days ago', 'Your competitor rst has posted new blog at abc '),
-    // createData(3, 'Notifcation Heading 3', ' 3 days ago', 'Your competitor xyz has posted new blog at abc solar'),
-    // createData(4, 'Notifcation Heading 4', ' 2 days ago', 'Your competitor climatebiz has posted new blog at energy system'),
-    // createData(5, 'Notifcation Heading 5', ' 1 days ago', 'Your competitor mno has posted new blog at system'),
-    // createData(6, 'Notifcation Heading 6', ' 9 days ago', 'Your competitor pqr has posted new blog at solar energy'),
 ]
 
 
@@ -139,36 +134,54 @@ const Sidebar = () => {
     const [activeTabColors, setActiveTabColors] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [notificationMenu, setNotificationMenu] = React.useState(null);
-    const [notification, setNotification] = React.useState({});
     const [lengthNoti, setLengthNoti] = React.useState(0);
     const [avatarMenu, setAvatarMenu] = React.useState(null);
     const openAvatar = Boolean(avatarMenu);
     const openNoti = Boolean(notificationMenu);
+    const [notification, setNotification] = React.useState(null);
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const config = {
+              headers: {
+                Authorization: `JWT ${Cookies.get("access_token")}`,
+              },
+            };
+            const res = await axios.get(
+              "https://blog.enerlyticslab.com/api/notification/",
+              config
+            );
+            const notificationData = res.data;
+            Cookies.set("notification", JSON.stringify(notificationData));
+            setNotification(notificationData);
+            setLengthNoti(notificationData.length);
+            notificationData.forEach((val) => {
+              rows.push(val);
+            });
+          } catch (err) {
+            console.error(err);
+          }
+        };
+      
+        fetchData();
+      }, []);
+      
+    React.useEffect(() => {
+    const storedNotification = Cookies.get("notification");
+    if (storedNotification && !notification) {
+        const parsedNotification = JSON.parse(storedNotification);
+        setNotification(parsedNotification);
+        setLengthNoti(parsedNotification.length);
+        parsedNotification.forEach((val) => {
+        rows.push(val);
+        });
+    }
+    }, [notification]);
 
     React.useEffect(() => {
         sessionStorage.setItem("TabIndex", activeTab)
     },[activeTab]);
-
-    React.useMemo(() => {
-        const fetchData = async () => {
-            try {
-                const config = {
-                    headers: {
-                        Authorization: `JWT ${Cookies.get("access_token")}`
-                    }
-                }
-                const res = await axios.get("https://blog.enerlyticslab.com/api/notification/", config)
-                // console.log(res.data)
-                setLengthNoti(res.data.length)
-                res.data.map((val) => {
-                    rows.push(val)
-                });
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        fetchData();
-    }, [])
 
     // State functions and mapping functions
     const handleTabClick = (index) => {
@@ -223,6 +236,7 @@ const Sidebar = () => {
         <AppBar position="fixed" sx={{ background: colors[tabColor] }}>
           <Toolbar>
 
+            <RefreshNotification />
             <RefreshToken />
 
             <IconButton
