@@ -139,6 +139,7 @@ const Sidebar = () => {
     const openAvatar = Boolean(avatarMenu);
     const openNoti = Boolean(notificationMenu);
     const [notification, setNotification] = React.useState(null);
+    const userInfo = JSON.parse(Cookies.get("Info"))
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -301,7 +302,7 @@ const Sidebar = () => {
                     </IconButton>
                 </Tooltip>
 
-                <Tooltip title="John DeSouza">
+                <Tooltip title={`${userInfo.first_name} ${userInfo.last_name}`}>
                     <IconButton
                         id="basic-button"
                         aria-controls={open ? 'basic-menu' : undefined}

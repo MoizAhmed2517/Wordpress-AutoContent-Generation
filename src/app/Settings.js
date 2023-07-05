@@ -11,9 +11,8 @@ import { useSnackbar } from 'notistack';
 import axios from 'axios';
 
 const Settings = () => {
-    const [disableConfirm, setDisableConfirm] = useState(true);
-    const [disableConfirmWP, setDisableConfirmWP] = useState(true);
     const [imageData, setImageData] = useState(null);
+    const [file, setFiles] = useState([]);
     const userInfo = JSON.parse(Cookies.get("Info"))
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -24,28 +23,25 @@ const Settings = () => {
     const [wpKey, setWPKey] = useState('');
     const [apiKey, setAPIKey] = useState('');
 
+    // console.log(userInfo);
+
     const {enqueueSnackbar} = useSnackbar()
 
-    const handleImageUpload = (data) => {
-        setImageData(data);
+    const handleImageUpload = (url, data) => {
+        setImageData(url);
+        setFiles(data);
     };
 
-    const handlePassword = (event) => {
-      setDisableConfirm(false);
-      console.log(event.target.value);
-    }
-
-    const handlePasswordWP = (event) => {
-        setDisableConfirmWP(false);
-        console.log(event.target.value);
-      }
-
     const handleSaveChnages = async() => {
+        // const formData = new FormData();
+        // formData.append("image", item);
+        
         const item = {
             first_name: firstName || userInfo.first_name,
             last_name: lastName || userInfo.last_name,
-            // username: userName || userInfo.username,
+            username: userInfo.username,
             email: email || userInfo.email,
+            // image: file,
             url: blogUrl || userInfo.url,
             wp_user: wpUser || userInfo.wp_user,
             wp_key: wpKey || userInfo.wp_key,
@@ -58,8 +54,8 @@ const Settings = () => {
         }
         try {
             const res = await axios.put("https://blog.enerlyticslab.com/auth/users/me/", item, config)
-            console.log(res.data)
-
+            Cookies.set("Info", JSON.stringify(res.data))
+            // window.location.reload(false)
         } catch (e) {
             enqueueSnackbar(e)
         }
@@ -81,6 +77,7 @@ const Settings = () => {
                         
                         {/* Personal information */}
                         <Grid item xs={12} sx={{ mb : 2 }}>
+                            
                             <Box sx={{
                                 backgroundColor : "#fbfbfb",
                                 paddingTop: '2%',
@@ -120,7 +117,7 @@ const Settings = () => {
                             <TextField fullWidth variant='standard' placeholder="Last name" label="Last name" defaultValue={userInfo.last_name} onChange={(e) => setLastName(e.target.value)} />
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
-                            <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={"test"} onChange={(e) => setUserName(e.target.value)} />
+                            <TextField fullWidth variant='standard' placeholder="Username" label="Username" defaultValue={userInfo.username} onChange={(e) => setUserName(e.target.value)} disabled />
                         </Grid>
                         <Grid item xs={12} sm={6} md={6}>
                             <TextField fullWidth variant='standard' placeholder="xyz@gmail.com" label="Email" defaultValue={userInfo.email} onChange={(e) => setEmail(e.target.value)} />

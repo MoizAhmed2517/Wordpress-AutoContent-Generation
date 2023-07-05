@@ -11,7 +11,7 @@ import { useSnackbar } from 'notistack';
 
 const Confirmation = (props) => {
 
-  const { enqueueSnakbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [blog, setBlog] = useState({})
   const [selectId, setSelectId] = useState([]);
 
@@ -28,7 +28,7 @@ const Confirmation = (props) => {
   const handleModalClose = async () => {
     const key = findKeyByValue(props.dropValue.label);
     const category = [];
-    category.push(key);
+    category.push(parseInt(key));
     const item = {
       "status": "publish",
       title: props.title,
@@ -45,9 +45,9 @@ const Confirmation = (props) => {
       const response = await axios.post("https://blog.enerlyticslab.com/api/wp-post/", item, config)
       console.log(response)
       props.setOpen(false);
-      window.location.reload(false);
+      // window.location.reload(false);
     } catch (err) {
-      enqueueSnakbar(err);
+      enqueueSnackbar(err);
       props.setOpen(false);
     }
 
