@@ -109,7 +109,7 @@ const MDTableGridTrack = () => {
               }
           }
           const response = await axios.get('https://blog.enerlyticslab.com/api/competitor-blogs/', config);
-          console.log(response)
+          console.log(response.data)
           rows = []
           response.data.map((item, index) => {
             let dt = new Date(item.blog_post_time);

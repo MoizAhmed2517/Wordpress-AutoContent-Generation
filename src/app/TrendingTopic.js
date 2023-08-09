@@ -19,7 +19,8 @@ const TrendingTopic = () => {
     const [selectTopic, setSelectTopic] = React.useState('');
     const [options, setOptions] = React.useState([]);
     const [isPending, setIsPending] = React.useState(false);
-    const [content, setContent] = React.useState({});
+    const aiTopicCookie = Cookies.get("Ai-topic");
+    const [content, setContent] = React.useState(aiTopicCookie ? JSON.parse(aiTopicCookie) : {});
 
     const { enqueueSnackbar } = useSnackbar();
 
@@ -68,6 +69,7 @@ const TrendingTopic = () => {
             setIsPending(true)
             const res = await axios.post("https://blog.enerlyticslab.com/api/generate-trending-topic/", item, config);
             setIsPending(false);
+            Cookies.set("Ai-topic", JSON.stringify(res.data))
             setContent(res.data);
         } catch (error) {
             enqueueSnackbar(error, { variant });
